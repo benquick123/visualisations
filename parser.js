@@ -21,7 +21,7 @@ $.when(
     masterTable = cloneObject(data[0]);
     emptyMaster();
     sumTables();
-    createTable();
+    //createTable();
 
 });
 function emptyMaster(){
