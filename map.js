@@ -27,15 +27,11 @@ function loadMap() {
         g.node().appendChild(document.importNode(xml.documentElement, true));
         svg = document.getElementById("mainMap");
 
-        var obcine = svg.children;
+        var obcine = d3.select(svg).selectAll("g");
+        obcine.selectAll("path").style("fill", "#147B4F");
+        obcine.on("mouseover", onMouseOverMunicipality);
+        obcine.on("click", onMouseClickMunicipality);
+        obcine.on("mouseout", onMouseOutMunicipality);
 
-        for (var i = 0; i < obcine.length; i++) {//child in svg.children) {
-            for (var j = 0; j < obcine[i].children.length; j++)
-                obcine[i].children[j].setAttribute("fill", "#147B4F");
-
-            obcine[i].addEventListener("mouseover", onMouseOverMunicipality);
-            obcine[i].addEventListener("click", onMouseClickMunicipality);
-            obcine[i].addEventListener("mouseout", onMouseOutMunicipality);
-        }
     });
 }
