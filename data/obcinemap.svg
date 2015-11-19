@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns:attrib="http://www.carto.net/attrib/"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 2613 1705"
-	 enable-background="new 0 0 2613 1705" xml:space="preserve">
+<svg version="1.1" 
+		id="mainMap" 
+		xmlns:attrib="http://www.carto.net/attrib/"
+		xmlns="http://www.w3.org/2000/svg" 
+		xmlns:xlink="http://www.w3.org/1999/xlink" 
+		x="0px" y="0px" 
+		viewBox="0 0 2613 1705"
+		enable-background="new 0 0 2613 1705" 
+		xml:space="preserve">
 <g id="obc_001" attrib:ob_ime="AjdovÃ…Â¡Ã„ina">
 	<path fill="#FDC689" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" d="M634,1153.4l4.2,10.1l0,0l-0.2,0.3
 		l-0.3,0.1l-1.9-0.1l-0.2,0.2l-0.5,0.7l-0.4,0.2l-0.3,0.3l-0.2,0.1l-0.1,0.2l-0.1,0.3l-0.4,0.3l-0.2,0.3l0,0.3l0.1,0.3l-0.2,0.8
@@ -12843,8 +12849,8 @@
 		l-0.4-0.3l-0.7,0.6l-1.2,0.4l-1.3,1l-0.5,0.8l-0.2,0.9l-0.4,0.8l0.1,0.4l-0.3,0.8l0,1.9L1428.7,1046.4L1428.7,1046.4L1428.7,1046.4
 		z"/>
 </g>
-<g id="obc_212_1_">
-	<path id="_x3C_Path_x3E_" fill="#FDC689" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" d="M1394.8,1114.1
+<g id="obc_212" attrib:ob_ime="Mirna">
+	<path fill="#FDC689" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" d="M1394.8,1114.1
 		l6.1,0.1l0.3,0.3l0.3,0l0.2-0.1l0.6,0l0.8,0.2l-0.3-0.3l-0.5-0.2l1.3-0.5l0.2-0.1l-0.1-0.3l0.1-0.7l0.1-0.2l-1.4-2l0.4-0.3
 		l-0.3-0.5l0-0.3l-0.6-1.3l-0.5-0.5l0.3-1.1l0.1-0.2l0-0.3l0.6,0.1l1.1-0.1l1-0.3l0.7-0.1l-0.5-1.8l-0.2,0l-0.2-0.1l-0.5-1.4l-0.5,0
 		l0.1-1.5l-0.3,0.4l-0.5,0.4l-1.3,0.4l-1,0.5l0.1-0.7l-0.1,0.1l-0.4,0l-0.2,0l-0.5-0.4l0-0.2l-0.2-0.1l-0.2-0.2l-0.2,0.2l-0.2-0.2

@@ -3,6 +3,8 @@ var urls = ["data/odhodki_tekoci.json", "data/odhodki_investicijski.json",  "dat
 var tmpData = [];
 var data = [];
 var masterTable = [];
+var dataLoaded = false;
+
 $.when(
     $.getJSON(urls[0], function(arr) {
         tmpData.push(arr);
@@ -21,9 +23,12 @@ $.when(
     masterTable = cloneObject(data[0]);
     emptyMaster();
     sumTables();
+    dataLoaded = true;
+    //console.log(masterTable);
     //createTable();
 
 });
+
 function emptyMaster(){
     for(var prop in masterTable){
         for(var sm in masterTable[prop]) {
@@ -41,6 +46,7 @@ function sumTables() {
         }
     }
 }
+
 function createTable() {
     var out = "<table>";
     for (var property in masterTable[0])
@@ -53,7 +59,7 @@ function createTable() {
         out += "</tr>";
     }
     out += "</table>";
-    document.getElementById("test").innerHTML = out;
+    document.getElementById("data").innerHTML = out;
 }
 function cloneObject(obj) {
     if (obj === null || typeof obj !== 'object')
