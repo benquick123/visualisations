@@ -5,7 +5,7 @@ function numerical(a,b) {
     return b -a ;
 }
 function onMouseClickChart(){
-    d3.select("#chart").selectAll("svg").remove();
+    d3.select("#chart").selectAll("svg").remove()
     d3.select("#container").style("display","none");
 }
 function displayChart(id) {
@@ -22,8 +22,8 @@ function displayChart(id) {
     }
 
     var h = window.innerHeight * 0.5;
-    var w = window.innerWidth* 0.8;
-    var cx =  0;
+    var w = window.innerWidth* 0.9;
+    var cx =window.innerWidth*  0.1;
     var cy = window.innerHeight * 0.15;
     var barPadding = 1;
 
@@ -50,8 +50,7 @@ function displayChart(id) {
         .attr("height", function() {
             console.log(h, data.length, h / data.length - barPadding);
             return h/ data.length - barPadding})
-        .attr("fill", "teal")
-        .text(function(d) { return d; });
+        .attr("fill", "teal");
 
     d3.select("#container").style("display","block")
         .on("click",onMouseClickChart);
