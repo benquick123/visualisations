@@ -6,9 +6,10 @@
 		xmlns:attrib="http://www.carto.net/attrib/"
 		xmlns="http://www.w3.org/2000/svg" 
 		xmlns:xlink="http://www.w3.org/1999/xlink" 
-		x="0px" y="0px" 
+		x="0px" y="0px"
+		width = "900" height = "900"
 		viewBox="0 0 2613 1705"
-		enable-background="new 0 0 2613 1705" 
+		enable-background="new 0 0 2613 1705"
 		xml:space="preserve">
 <g id="obc_001" attrib:ob_ime="AjdovÃ…Â¡Ã„ina">
 	<path fill="#FDC689" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" d="M634,1153.4l4.2,10.1l0,0l-0.2,0.3
