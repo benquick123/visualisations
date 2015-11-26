@@ -9,7 +9,8 @@ function onMouseClickMunicipality() {
     var id = parseInt(this.getAttribute("id").replace("obc_", ""));
     if(dataLoaded) {
         console.log("onmouseclick: " + id);
-        console.log(masterTable[id-1]);
+        //console.log(masterTable[id-1]);
+        displayChart(id);
     }
 }
 
@@ -69,6 +70,7 @@ $(function(){
             var region = $('#world-map').vectorMap('get', 'mapObject').regions[code];
             console.log(id);
             console.log(region);
+            displayChart(id);
         }
     });
 
