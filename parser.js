@@ -1,9 +1,11 @@
 var urls = ["data/odhodki_tekoci.json", "data/odhodki_investicijski.json",  "data/transferji_tekoci.json", "data/transferji_investicijski.json"];
+var othrData = ["data/obcine.json", "data/categories.json"];
 
 var tmpData = [];
 var data = [];
 var masterTable = [];
 var dataLoaded = false;
+var idObcine, idCategories;
 
 $.when(
     $.getJSON(urls[0], function(arr) {
@@ -17,6 +19,12 @@ $.when(
     }),
     $.getJSON(urls[3], function(arr) {
         tmpData.push(arr);
+    }),
+    $.getJSON(othrData[0], function(arr) {
+        idObcine = arr;
+    }),
+    $.getJSON(othrData[1], function(arr) {
+        idCategories = arr;
     })
 ).then(function() {
     data = tmpData;
@@ -24,9 +32,6 @@ $.when(
     emptyMaster();
     sumTables();
     dataLoaded = true;
-    //console.log(masterTable);
-    //createTable();
-
 });
 
 function emptyMaster(){
