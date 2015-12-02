@@ -1,6 +1,6 @@
 var svg;
 
-function onMouseOverMunicipality() {
+/*function onMouseOverMunicipality() {
     //console.log("onmouseover: " + this.getAttribute("id"));
     d3.select(this).selectAll("path").transition().duration(250).style("fill", "#B3481D");
 }
@@ -35,7 +35,7 @@ function loadMap() {
         obcine.on("mouseout", onMouseOutMunicipality);
 
     });
-}
+}*/
 
 //http://paletton.com/#uid=70T1+0kranUh+v7mLrvudjCC4et
 $(function(){
@@ -62,19 +62,22 @@ $(function(){
         onRegionOut: function(e, code) {
             var region = $('#world-map').vectorMap('get', 'mapObject').regions[code];
             var path = d3.select("#" +  code);
-            path.transition().duration(250).style("fill", "#888888");
+            if (selectedCAT == null || Object.keys(selectedCAT).length == 0)
+                path.transition().duration(250).style("fill", "#888888");
+            else
+                colorMapWithData(selectedCAT);
         },
 
         onRegionClick: function (e, code) {
             var id = code.replace("ob", "");
             var region = $('#world-map').vectorMap('get', 'mapObject').regions[code];
-            console.log(id);
-            console.log(region);
+            //console.log(id);
+            //console.log(region);
             displayChart(id);
         }
     });
 
-    var svg = $(".jvectormap-container")[0].children[0];
+    svg = $(".jvectormap-container")[0].children[0];
     var paths = svg.children[1].children;
     for (var i = 0; i < paths.length; i++) {
         var dataCode = paths[i].getAttribute("data-code");

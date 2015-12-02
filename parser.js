@@ -32,6 +32,7 @@ $.when(
     emptyMaster();
     sumTables();
     dataLoaded = true;
+    loadCategories(idCategories);
 });
 
 function emptyMaster(){
