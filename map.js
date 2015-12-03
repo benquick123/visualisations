@@ -43,6 +43,7 @@ $(function(){
         map: 'Obcine_mill_en',
         backgroundColor: "#e4e4e4",
         zoomAnimate: true,
+        zoomButtons : false,
         regionStyle: {
             initial: {
                 fill: "#888888"
@@ -73,7 +74,11 @@ $(function(){
             var region = $('#world-map').vectorMap('get', 'mapObject').regions[code];
             //console.log(id);
             //console.log(region);
-            displayChart(id);
+            if (id != 213) {
+                if (id > 144) id--;
+                displayChart(id - 1);
+                console.log(id);
+            }
         }
     });
 
