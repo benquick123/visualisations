@@ -1,13 +1,22 @@
 ﻿<html>
 <head>
     <style>
+        html {
+            overflow: hidden;
+        }
         body {
             margin: 0px;
             background-color: #e4e4e4;
             font-family: 'Open-Sans', sans-serif;
+            overflow-x: hidden;
         }
+        ::-webkit-scrollbar{
+            width:0px;   // here actuall it exist but width is 0 so no one can see it
+            background:transparent;
+        }
+
         #chart-container {
-            position:fixed;
+            position:absolute;
             padding:0;
             margin:0;
             top:0;
@@ -20,7 +29,9 @@
             position: relative;
             font: 10px sans-serif;
             top: 10%;
-            left: 10%;
+            left: 5%;
+            width: 90%;
+            height: 80%;
             overflow: hidden;
             display:flex;
         }
@@ -31,7 +42,7 @@
             width:20%;
             height:100%;
             background-color: #dadada;
-            overflow: auto;
+            overflow-y: scroll;
         }
         #world-map {
             flex:1;
@@ -41,10 +52,10 @@
         #name{
             position: absolute;
             text-align: center;
-            width: 100%;
-            height: 10%;
-            top:5%;
-            left:0px;
+            width: 80%;
+            height: 5%;
+            left: 10%;
+            top: 5%;
             color: white;
         }
 

@@ -77,7 +77,6 @@ $(function(){
             if (id != 213) {
                 if (id > 144) id--;
                 displayChart(id - 1);
-                console.log(id);
             }
         }
     });
