@@ -76,6 +76,7 @@ $(function(){
             //console.log(region);
             if (id != 213) {
                 if (id > 144) id--;
+                if (toggleOn) toggleSidebar();
                 displayChart(id - 1);
             }
         }

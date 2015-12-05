@@ -1,14 +1,6 @@
 var selectedCAT = new Array();
 var toggleOn = false;
-function byColumn(a, b) {
-    if (a[0] === b[0]) {
-        return 0;
-    }
-    else {
-        return (a[0] > b[0]) ? -1 : 1;
-    }
-}
-function onButtonClick(){
+function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");
     if (toggleOn) {
         categoriesDIV.style("left", "300px").transition().duration(250).style("left", "0px");
@@ -30,7 +22,7 @@ function loadCategories(idCategories) {
         }
     }
     categoriesDIV.innerHTML = inner;
-    d3.select("#toggleButton").on("click",onButtonClick);
+    d3.select("#toggleButton").on("click",toggleSidebar);
     d3.select("#categories").selectAll("div").on("click", onCategoryMouseClick);
     d3.select("#categories").selectAll("div").on("mouseover", onCategoryMouseOver);
     d3.select("#categories").selectAll("div").on("mouseout", onCategoryMouseOut);

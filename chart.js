@@ -4,13 +4,10 @@
 window.onresize = resizeChart;
 var barPadding = 1;
 var lineStart = 0.4;
-var lineEnd = 0.85;
+var lineEnd = 0.9;
 var values = [];
 var idx = [];
 
-function numerical(a,b) {
-    return b -a ;
-}
 function byColumn(a, b) {
     if (a[0] === b[0]) {
         return 0;
@@ -44,14 +41,20 @@ function resizeChart(){
         .style("height", function() {
             return h/ values.length - barPadding});
 
-    console.log(d3.selectAll("#value"));
-    d3.selectAll("value")
+
+    d3.selectAll("#value")
         .data(values)
-        .style("x", function(d) {
+        .attr("x", function(d) {
             return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, values) * d +5);
         })
-        .style("y", function(d,i) {
+        .attr("y", function(d,i) {
             return i * (h / values.length)+14 ;
+        });
+
+    d3.selectAll("#label")
+        .data(values)
+        .attr("y", function(d,i) {
+            return i * (h / idx.length) +14;
         });
 }
 
@@ -144,7 +147,8 @@ function displayChart(id) {
             return i * (h / values.length)+14 ;
         })
         .attr("font-family", "sans-serif")
-        .attr("font-size", "1vmax");
+        .attr("font-size", "1vmax")
+        .attr("id","value");
 
     //        Chart legend
     svg.selectAll("index")
@@ -161,8 +165,9 @@ function displayChart(id) {
         .attr("width",lineStart)
         .style("text-align","right")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "8px")
-        .attr("fill", "white");
+        .attr("font-size", "0.9vmax")
+        .attr("fill", "white")
+        .attr("id","label");
 
     d3.select("#chart-container").style("display","flex")
         .on("click",onMouseClickChart);
