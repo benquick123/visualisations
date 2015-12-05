@@ -1,17 +1,36 @@
 var selectedCAT = new Array();
-
+var toggleOn = false;
+function byColumn(a, b) {
+    if (a[0] === b[0]) {
+        return 0;
+    }
+    else {
+        return (a[0] > b[0]) ? -1 : 1;
+    }
+}
+function onButtonClick(){
+    var categoriesDIV = d3.select("#categories-container");
+    if (toggleOn) {
+        categoriesDIV.style("left", "300px").transition().duration(250).style("left", "0px");
+        toggleOn = false;
+    }
+    else {
+        categoriesDIV.style("left", "0px").transition().duration(300).style("left", "300px");
+        toggleOn = true;
+    }
+}
 function loadCategories(idCategories) {
     var categoriesDIV = $("#categories")[0];
     var inner = "";
-
     for (var cat in idCategories) {
         if (cat.length == 2) {
             inner += '<div id="cat' + cat + '" class="cat_single">';
-            inner += idCategories[cat].toLowerCase().replace(" ", "");
+            inner += "["+cat+"] "+idCategories[cat].toLowerCase().replace(" ", "");
             inner += '</div>';
         }
     }
     categoriesDIV.innerHTML = inner;
+    d3.select("#toggleButton").on("click",onButtonClick);
     d3.select("#categories").selectAll("div").on("click", onCategoryMouseClick);
     d3.select("#categories").selectAll("div").on("mouseover", onCategoryMouseOver);
     d3.select("#categories").selectAll("div").on("mouseout", onCategoryMouseOut);
@@ -37,7 +56,7 @@ function onCategoryMouseClick() {
 
 function onCategoryMouseOut() {
     if (selectedCAT[this.getAttribute("id")] == null)
-        d3.select(this).transition().duration(250).style("background-color", "#dadada");
+        d3.select(this).transition().duration(250).style("background-color", "#4A4A4A");
 }
 
 function colorMapWithData(selectedCAT) {

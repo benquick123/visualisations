@@ -20,7 +20,7 @@
             padding:0;
             margin:0;
             top:0;
-            width: 80%;
+            width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.62);
             display: none;
@@ -38,12 +38,6 @@
         #map-container {
             display:flex;
         }
-        #categories {
-            width:20%;
-            height:100%;
-            background-color: #dadada;
-            overflow-y: scroll;
-        }
         #world-map {
             flex:1;
             height:100%;
@@ -58,15 +52,42 @@
             top: 5%;
             color: white;
         }
-
-        .cat_single {
-            padding:2px;
-            height: 5%;
+        #categories-container {
+            position:absolute;
+            opacity: 0.9;
+            left:0px;
+            margin-left: -300px;
+            width:300px;
+            height:100%;
+         }
+        #categories{
+            position: absolute;
             width: 100%;
-            border-bottom: 1px solid #000000;
+            height: 100%;
+
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        #toggleButton{
+            position:relative;
+            float: left;
+            margin-right: 20px;
+            width: 25px;
+            height: 35px;
+            top: 0px;
+            left: 300px;
+            background-color: #4A4A4A;
+        }
+        .cat_single {
+            line-height: 30px;
+            padding:2px;
+            height: 30px;
+            width: 100%;
+            border-bottom: 1px solid #e6e6e6;
             cursor: pointer;
-            background-color: #dadada;
-            font-size: 1vw;
+            background-color: #4A4A4A;
+            font-size: 10px;
+            color: #e6e6e6;
         }
     </style>
     <link rel="stylesheet" href="jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
@@ -83,14 +104,16 @@
 <body>
     <div id="map-container">
         <div id="world-map"></div>
-        <div id="categories"></div>
+        <div id="categories-container">
+            <div id="toggleButton"></div>
+            <div id="categories"></div>
+        </div>
     </div>
 
     <div id="chart-container">
         <div id="name"></div>
         <div id="chart"></div>
     </div>
-
 <script>
 </script>
   
