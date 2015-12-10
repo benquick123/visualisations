@@ -72,10 +72,60 @@ function onMouseClickChart(){
         .remove();
 
     d3.select("#chart-container").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
+    d3.select("#compare-options").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
 }
+
+function onObcinaChosenChange(event, params) {
+    var id = params["selected"];
+    console.log(id);
+}
+
+function onObcinaCompareChange(event, params) {
+    var id = params["selected"];
+    console.log(id);
+}
+
+function loadDropdowns(id) {
+    $('.chosen-select').chosen({
+        placeholder_text_single: "Primerjaj z ...",
+        no_results_text: "Ni rezultatov"
+    });
+
+    $("#select-obcina-chosen").on("change", function(evt, params) {
+        onObcinaChosenChange(evt, params);
+    });
+    $("#select-obcina-compare").on("change", function(evt, params) {
+        onObcinaCompareChange(evt, params);
+    });
+    /*
+     $('.my_select_box').on('change', function(evt, params) {
+        do_something(evt, params);
+      });
+    */
+
+    var obcinaChosen = d3.select("#obcina-chosen").select(".chosen-select");
+    var obcinaCompare = d3.select("#obcina-compare").select(".chosen-select");
+
+    var chosenInnerHTML = '<option value=""></option>';
+    var compareInnerHTML = '<option value=""></option>';
+
+    for (var obcina in idObcine) {
+        if (obcina == (id+1))
+            chosenInnerHTML += '<option selected="selected" value="' + obcina + '">' + idObcine[obcina] + '</option>';
+        else
+            chosenInnerHTML += '<option value="' + obcina + '">' + idObcine[obcina] + '</option>';
+        compareInnerHTML += '<option value="' + obcina + '">' + idObcine[obcina] + '</option>';
+    }
+
+    obcinaChosen[0][0].innerHTML = chosenInnerHTML;
+    obcinaCompare[0][0].innerHTML = compareInnerHTML;
+
+    $('.chosen-select').trigger('chosen:updated');
+}
+
 function displayChart(id) {
-    d3.select("#chart-container").style("display","flex").style("opacity",1)
-        .on("click",onMouseClickChart);
+    d3.select("#chart-container").style("display","flex").style("opacity",1).on("click",onMouseClickChart, false);
+    d3.select("#compare-options").style("display","flex").style("opacity",1);
 
     var ido = 0;
     if (id > 144) ido = 1;
@@ -85,6 +135,7 @@ function displayChart(id) {
     for(var i = 10;i<24;i++)
         if (i != 21) data.push([parseInt(masterTable[id][i.toString()]),i]);
 
+    loadDropdowns(id+ido);
     data.sort(byColumn);
 
     for (var i = 0; i < data.length; i++){
