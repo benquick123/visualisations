@@ -58,29 +58,40 @@ function colorMapWithData(selectedCAT) {
         }
     }
     else {
+        var ido = 0;
         var paths = svg.children[1].children;
         var sumObcine = new Array(Object.keys(idObcine).length + 2).join('0').split('').map(parseFloat);
         for (var cat in selectedCAT) {
             cat = cat.replace("cat", "");
-            console.log(cat);
+            //console.log(cat);
             for (var obcina in idObcine) {
-                sumObcine[obcina-1] += masterTable[obcina-1][cat];
+                ido = obcina > 144 ? 1 : 0;
+                sumObcine[obcina-1] += masterTable[obcina-ido-1][cat];
             }
         }
 
         var min = 1, max = 0;
         for (var obcina in idObcine) {
-            sumObcine[obcina-1] /= masterTable[obcina-1]["sum"];
+            sumObcine[obcina-1] /= prebivalci[obcina];
             if (sumObcine[obcina-1] > max)
                 max = sumObcine[obcina-1];
             else if (sumObcine[obcina-1] < min)
                 min = sumObcine[obcina-1];
         }
 
-        //console.log(sumObcine);
+        for (var obcina in idObcine) {
+            sumObcine[obcina-1] = (sumObcine[obcina-1] - min) / (max - min);
+        }
 
-        console.log(max);
-        console.log(min);
+        /*var min = 1, max = 0;
+        for (var obcina in idObcine) {
+            ido = obcina > 144 ? 1 : 0;
+            sumObcine[obcina-1] /= masterTable[obcina-ido-1]["sum"];
+            if (sumObcine[obcina-1] > max)
+                max = sumObcine[obcina-1];
+            else if (sumObcine[obcina-1] < min)
+                min = sumObcine[obcina-1];
+        }
 
         var max1 = 0, min1 = 1;
 
@@ -90,14 +101,8 @@ function colorMapWithData(selectedCAT) {
                 max1 = sumObcine[obcina-1];
             else if (sumObcine[obcina-1] < min1)
                 min1 = sumObcine[obcina-1];
-        }
+        }*/
 
-
-        //console.log(max1);
-        console.log(sumObcine);
-
-
-       // console.log(sumObcine);
         var r, g, b;
         for (var obcina in idObcine) {
             r = 136 * (1-sumObcine[obcina-1]) + 22 * (sumObcine[obcina-1]);

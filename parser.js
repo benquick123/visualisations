@@ -1,11 +1,12 @@
 var urls = ["data/odhodki_tekoci.json", "data/odhodki_investicijski.json",  "data/transferji_tekoci.json", "data/transferji_investicijski.json"];
-var othrData = ["data/obcine.json", "data/categories.json"];
+var othrData = ["data/obcine.json", "data/categories.json", "data/prebivalci.json"];
 
 var tmpData = [];
 var data = [];
 var masterTable = [];
 var dataLoaded = false;
 var idObcine, idCategories;
+var prebivalci;
 
 $.when(
     $.getJSON(urls[0], function(arr) {
@@ -25,6 +26,9 @@ $.when(
     }),
     $.getJSON(othrData[1], function(arr) {
         idCategories = arr;
+    }),
+    $.getJSON(othrData[2], function(arr) {
+        prebivalci = arr;
     })
 ).then(function() {
     data = tmpData;

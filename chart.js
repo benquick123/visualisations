@@ -97,11 +97,6 @@ function loadDropdowns(id) {
     $("#select-obcina-compare").on("change", function(evt, params) {
         onObcinaCompareChange(evt, params);
     });
-    /*
-     $('.my_select_box').on('change', function(evt, params) {
-        do_something(evt, params);
-      });
-    */
 
     var obcinaChosen = d3.select("#obcina-chosen").select(".chosen-select");
     var obcinaCompare = d3.select("#obcina-compare").select(".chosen-select");
