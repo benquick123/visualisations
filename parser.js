@@ -29,7 +29,8 @@ $.when(
     }),
     $.getJSON(othrData[2], function(arr) {
         prebivalci = arr;
-    })
+    }
+    )
 ).then(function() {
     data = tmpData;
     masterTable = cloneObject(data[0]);

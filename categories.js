@@ -82,8 +82,8 @@ function colorMapWithData(selectedCAT) {
         for (var obcina in idObcine) {
             sumObcine[obcina-1] = (sumObcine[obcina-1] - min) / (max - min);
         }
-
-        /*var min = 1, max = 0;
+         /*
+        var min = 1, max = 0;
         for (var obcina in idObcine) {
             ido = obcina > 144 ? 1 : 0;
             sumObcine[obcina-1] /= masterTable[obcina-ido-1]["sum"];
