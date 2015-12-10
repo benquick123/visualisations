@@ -9,7 +9,7 @@ var lineStart = 0.4;
 var lineEnd = 0.9;
 var values = [];
 var idx = [];
-var svg;
+var svgChart;
 
 function byColumn(a, b) {
     if (a[0] === b[0])
@@ -65,9 +65,10 @@ function onMouseClickChart(){
     dataSlot2 = null;
 
     var ch = d3.select("#chart");
+
     ch.selectAll("rect").remove();
     ch.selectAll("text").remove();
-    ch.selectAll("svg").remove();
+    ch.select("svg").remove();
     d3.select("#chart-container").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
     d3.select("#compare-options").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#compare-options").style("display","none")});
 }
@@ -115,7 +116,7 @@ function onObcinaCompareChange(event, params) {
             return wid;
         });
 
-    svg.selectAll("rect2")
+    svgChart.selectAll("rect2")
         .data(values2)
         .enter()
         .append("rect")
@@ -145,7 +146,7 @@ function onObcinaCompareChange(event, params) {
         .attr("opacity",0.8)
         .attr("id","rect-comp2");
 
-    svg.selectAll("#label")
+    svgChart.selectAll("#label")
         .data(idx)
         .enter()
         .append("text")
@@ -231,14 +232,14 @@ function displayChart(id) {
         .text(idObcine[parseInt(ido+id+1)]);
 
     //      Create SVG element
-    svg = d3.select("#chart")
+    svgChart = d3.select("#chart")
         .append("svg")
         .attr("width", w)
         .attr("height", h)
         .on("click",onMouseClickChart);
 
     //        Chart lines
-    svg.selectAll("rect")
+    svgChart.selectAll("rect")
         .data(values)
         .enter()
         .append("rect")
@@ -260,7 +261,7 @@ function displayChart(id) {
         .attr("id","rect-comp1");
 
     //        Chart values
-    svg.selectAll("value")
+    svgChart.selectAll("value")
         .data(values)
         .enter()
         .append("text")
@@ -281,7 +282,7 @@ function displayChart(id) {
         .attr("id","value");
 
     //        Chart legend
-    svg.selectAll("index")
+    svgChart.selectAll("index")
         .data(idx)
         .enter()
         .append("text")
