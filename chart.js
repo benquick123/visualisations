@@ -44,6 +44,7 @@ function onObcinaChosenChange(event, params) {
 
 function onObcinaCompareChange(event, params) {
     var id = params["selected"];
+    d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#0b4e8b");
     redoChart(id - 1, 2);
 }
 
@@ -112,7 +113,7 @@ function loadDropdowns(id) {                                                    
     obcinaCompare[0][0].innerHTML = compareInnerHTML;
 
     d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "teal");
-    //0b4e8b
+    //
 
     chosenDiv.trigger('chosen:updated');
 }
