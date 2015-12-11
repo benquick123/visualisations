@@ -23,6 +23,7 @@ function resizeChart(){
     var chartDiv = $("#chart");
     var h = chartDiv.height();
     var w = chartDiv.width();
+    $('.chosen-select').trigger('chosen:updated');
 }
 
 function onMouseClickChart(){
@@ -106,6 +107,9 @@ function loadDropdowns(id) {                                                    
 
     obcinaChosen[0][0].innerHTML = chosenInnerHTML;
     obcinaCompare[0][0].innerHTML = compareInnerHTML;
+
+    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "teal");
+    //0b4e8b
 
     chosenDiv.trigger('chosen:updated');
 }
