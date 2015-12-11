@@ -10,7 +10,7 @@ var dataSlot1 = null, dataSlot2 = null;
 //          Chart Settings
 var barPadding = 1;
 var lineStart = 0.4;
-var lineEnd = 0.9;
+var lineEnd = 0.935;
 
 //          Sort by first column
 function byColumn(a, b) {
@@ -32,6 +32,7 @@ function onMouseClickChart(){
     dataSlot2 = null;
     chartDesplayed = false;
     svgChart.remove();
+    lineEnd = 0.935;
     d3.select("#name").selectAll("text").remove();
     d3.select("#chart-container").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
     d3.select("#compare-options").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#compare-options").style("display","none")});
@@ -124,11 +125,13 @@ function numberWithCommas(x) {
 function separateData(data){
     var values = [], idx = [];
     for (var i = 0; i < data.length; i++) {
+
         idx[i] = data[i][1];
         values[i] = data[i][0];
     }
     return [values,idx]
 }
+
 function redoChart(id, slot) {                                                       // REDO CHART
     var data = [];
 
@@ -271,7 +274,8 @@ function redoChart(id, slot) {                                                  
                 idSlot1 = id;
                 dataSlot1 = getData(id);
             }
-
+            lineEnd = 0.948;
+            console.log(dataSlot1);
             //        Chart lines
             svgChart.selectAll("#rect1")
                 .transition().duration(250)
@@ -280,9 +284,16 @@ function redoChart(id, slot) {                                                  
                     var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
                     var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
 
-                    if (v1 == 0) wid  = 0;
+
+                    if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) wid = w*(lineEnd-lineStart);
+                    else if (v1 == 0) wid  = 0;
                     else  wid = w*(lineEnd-lineStart) * v1/(v1+v2);
                     return wid;
+                })
+                .style("fill", function(d,i) {
+                    console.log(dataSlot1[i][0], dataSlot2[i][0]);
+                    if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "grey";
+                    else return "teal";
                 });
 
             svgChart.selectAll("#rect2")
@@ -300,20 +311,23 @@ function redoChart(id, slot) {                                                  
                     var x;
                     var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
                     var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+
                     if ( v2 == 0) x = lineEnd*w;
                     else  x = lineStart*w + w*(lineEnd-lineStart) * v1/(v1+v2);
                     if ( v2 == 0) wid  = 0;
                     else  wid = lineEnd*w-x;
+                    if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) wid = 0;
                     return wid;
                 });
 
             //        Chart values - € or %
             svgChart.selectAll("#value1")
                 .text(function(d,i) {
-                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
-                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
-                    var r = v1/(v1+v2);
-                    return parseInt(r * 100)+ " %" + "  ";
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]) * 100;
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]) * 100;
+                    var r = v1/(v1+v2) * 100;
+                    if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "0%";
+                    else return Math.round(r)+ " %" + "  ";
                 })
                 .style("fill", "white")
                 .style("font-family", "sans-serif")
@@ -325,10 +339,11 @@ function redoChart(id, slot) {                                                  
 
             svgChart.selectAll("#value2")
                 .text(function(d,i) {
-                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
-                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
-                    var r = v2/(v1+v2);
-                    return parseInt(r * 100)+ " %" + "  ";
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]) * 100;
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]) * 100;
+                    var r = v2/(v1+v2) * 100;
+                    if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "0%";
+                    else return Math.round(r)+ " %" + "  ";
                 })
                 .style("fill", "white")
                 .style("font-family", "sans-serif")
@@ -336,7 +351,7 @@ function redoChart(id, slot) {                                                  
                 .attr("x", function(d) {
                     return parseInt(w*lineEnd);
                 })
-                .attr("id", "value1");
+                .attr("id", "value2");
 
             svgChart.selectAll("#label")
                 .text(function(d,i) {
