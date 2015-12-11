@@ -4,8 +4,8 @@ var svgChart;
 
 //          Chart global data
 var chartDesplayed = false;
-var idSlot1, idSlot2;
-var dataSlot1, dataSlot2;
+var idSlot1 = null, idSlot2 = null;
+var dataSlot1 = null, dataSlot2 = null;
 
 //          Chart Settings
 var barPadding = 1;
@@ -14,7 +14,6 @@ var lineEnd = 0.9;
 
 //          Sort by first column
 function byColumn(a, b) {
-
     if (a[0] === b[0]) return 0;
     return (a[0] > b[0]) ? -1 : 1;
 }
@@ -26,6 +25,10 @@ function resizeChart(){
 }
 
 function onMouseClickChart(){
+    idSlot1 = null;
+    idSlot2 = null;
+    dataSlot1 = null;
+    dataSlot2 = null;
     chartDesplayed = false;
     svgChart.remove();
     d3.select("#name").selectAll("text").remove();
@@ -35,12 +38,12 @@ function onMouseClickChart(){
 
 function onObcinaChosenChange(event, params) {
     var id = params["selected"];
-    console.log(id);
+    redoChart(id - 1, 1);
 }
 
 function onObcinaCompareChange(event, params) {
     var id = params["selected"];
-    console.log(id);
+    redoChart(id - 1, 2);
 }
 
 
@@ -121,9 +124,7 @@ function separateData(data){
     }
     return [values,idx]
 }
-function redoChart(id, slot){                                                                       // REDO CHART
-    var ido = 0;
-    if (id > 143) ido = 1;
+function redoChart(id, slot) {                                                       // REDO CHART
     var data = [];
 
     var chartDiv = $("#chart");
@@ -133,7 +134,7 @@ function redoChart(id, slot){                                                   
     if (!chartDesplayed){   // There is no chart
         chartDesplayed = true;
         dataSlot1 = getData(id);
-
+        idSlot1 = id;
         jQuery.extend(true, data, dataSlot1);
         data = data.sort(byColumn);
         data = separateData(data);
@@ -156,8 +157,8 @@ function redoChart(id, slot){                                                   
             })
             .attr("height", function() {
                 return h/ data[1].length - barPadding})
-            .style("opacity", 0.8)
-            .attr("id", "rect1");
+            .attr("id", "rect1")
+            .style("opacity", 0.8);
 
 
 
@@ -165,6 +166,7 @@ function redoChart(id, slot){                                                   
             .attr("y", function(d,i) {
                 return i * (h / data[0].length);
             })
+            .attr("fill", "#0B4E8B")
             .attr("x", lineEnd*w)
             .attr("width", 0)
             .attr("height", function() {
@@ -191,7 +193,18 @@ function redoChart(id, slot){                                                   
             })
             .attr("id", "value1");
 
-
+        svgChart.selectAll("value2").data(data[0]).enter().append("text")
+            .text("")
+            .style("fill", "white")
+            .style("font-family", "sans-serif")
+            .style("font-size", "1vmax")
+            .attr("x", function(d) {
+                return parseInt(w*lineEnd);
+            })
+            .attr("y", function(d,i) {
+                return i * (h / data[0].length)+14 ;
+            })
+            .attr("id", "value2");
 
         //        Chart legend
         svgChart.selectAll("label").data(data[1]).enter().append("text")
@@ -210,77 +223,121 @@ function redoChart(id, slot){                                                   
 
     }
     else {
-        if (slot == 2 && idSlot2 == null){
-            dataSlot2 = getData(id);
-
-
+        if (slot == 1 && idSlot2 == null){
+            dataSlot1 = getData(id);
+            idSlot1 = id;
+            jQuery.extend(true, data, dataSlot1);
+            data = data.sort(byColumn);
+            data = separateData(data);
             //        Chart lines
-            svgChart.selectAll("rect1").data(data[0]).enter().append("rect")
-                .attr("y", function(d,i) {
-                    return i * (h / data[0].length);
-                })
-                .style("fill", "teal")
-                .attr("x",lineStart*w)
-                .attr("width", 0)
-                .transition().duration(500)
-                .attr("width", function(d) {
-                    var wid = parseInt(w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) * d);
-                    if (wid < 1 && d > 0) return 1;
+
+            svgChart.selectAll("#rect1")
+                .transition().duration(250)
+                .attr("width", function(d,i) {
+                    var wid = parseInt(w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) * data[0][i]);
+                    if (wid < 1 &&  data[0][i] > 0) return 1;
                     return wid;
                 })
-                .attr("height", function() {
-                    return h/ data[1].length - barPadding})
-                .style("opacity", 0.8)
-                .attr("id", "rect1");
-
-
-
-            svgChart.selectAll("rect2").data(data[0]).enter().append("rect")
-                .attr("y", function(d,i) {
-                    return i * (h / data[0].length);
-                })
-                .attr("x", lineEnd*w)
-                .attr("width", 0)
-                .attr("height", function() {
-                    return h/ data[0].length - barPadding})
-                .style("opacity", 0.8)
-                .attr("id", "rect2");
 
             //        Chart values - € or %
-            svgChart.selectAll("value1").data(data[0]).enter().append("text")
-                .text(function(d) {
-                    return numberWithCommas(parseInt(d))+ " €" + "  ";
+            svgChart.selectAll("#value1")
+                .text(function(d,i) {
+                    return numberWithCommas(parseInt( data[0][i]))+ " €" + "  ";
+                })
+                .transition().duration(250)
+                .attr("x", function(d,i) {
+                    return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) *  data[0][i] +5);
+                })
+
+            //        Chart legend
+            svgChart.selectAll("#label")
+                .text(function(d,i) {
+                    return idCategories[data[1][i]];
+                });
+
+        }
+        else{
+            if (slot == 2){
+                idSlot2 = id;
+                dataSlot2 = getData(id);
+            }
+
+            else{
+                idSlot1 = id;
+                dataSlot1 = getData(id);
+            }
+
+            //        Chart lines
+            svgChart.selectAll("#rect1")
+                .transition().duration(250)
+                .attr("width", function(d,i) {
+                    var wid;
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+
+                    if (v1 == 0) wid  = 0;
+                    else  wid = w*(lineEnd-lineStart) * v1/(v1+v2);
+                    return wid;
+                });
+
+            svgChart.selectAll("#rect2")
+                .transition().duration(250)
+                .attr("x",function(d,i) {
+                    var x;
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+                    if (v2 == 0) x  = lineEnd*w;
+                    else  x = lineStart*w + w*(lineEnd-lineStart) * v1/(v1+v2);
+                    return x;
+                })
+                .attr("width", function(d,i) {
+                    var wid;
+                    var x;
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+                    if ( v2 == 0) x = lineEnd*w;
+                    else  x = lineStart*w + w*(lineEnd-lineStart) * v1/(v1+v2);
+                    if ( v2 == 0) wid  = 0;
+                    else  wid = lineEnd*w-x;
+                    return wid;
+                });
+
+            //        Chart values - € or %
+            svgChart.selectAll("#value1")
+                .text(function(d,i) {
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+                    var r = v1/(v1+v2);
+                    return parseInt(r * 100)+ " %" + "  ";
                 })
                 .style("fill", "white")
                 .style("font-family", "sans-serif")
                 .style("font-size", "1vmax")
-
-                .attr("x",  w*lineStart)
-                .transition().duration(500)
                 .attr("x", function(d) {
-                    return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) * d +5);
-                })
-                .attr("y", function(d,i) {
-                    return i * (h / data[0].length)+14 ;
+                    return parseInt(w*lineStart-w*0.03);
                 })
                 .attr("id", "value1");
 
-
-
-            //        Chart legend
-            svgChart.selectAll("label").data(data[1]).enter().append("text")
-                .text(function(d) {
-                    return idCategories[d];
+            svgChart.selectAll("#value2")
+                .text(function(d,i) {
+                    var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                    var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+                    var r = v2/(v1+v2);
+                    return parseInt(r * 100)+ " %" + "  ";
                 })
-                .attr("x", 0)
-                .attr("y", function(d,i) {
-                    return i * (h / data[1].length) +14;
-                })
-                .attr("width", lineStart)
-                .style("font-family", "sans-serif")
-                .style("font-size", "0.9vmax")
                 .style("fill", "white")
-                .attr("id", "label");
+                .style("font-family", "sans-serif")
+                .style("font-size", "1vmax")
+                .attr("x", function(d) {
+                    return parseInt(w*lineEnd);
+                })
+                .attr("id", "value1");
+
+            svgChart.selectAll("#label")
+                .text(function(d,i) {
+                    return idCategories[dataSlot1[i][1]];
+                });
+
 
         }
 
