@@ -1,4 +1,4 @@
-var urls = ["data/odhodki_tekoci.json", "data/odhodki_investicijski.json",  "data/transferji_tekoci.json", "data/transferji_investicijski.json"];
+var urls = ["data/odhodki_tekoci_2013.json", "data/odhodki_investicijski_2013.json",  "data/transferji_tekoci_2013.json", "data/transferji_investicijski_2013.json"];
 var othrData = ["data/obcine.json", "data/categories.json", "data/prebivalci.json"];
 
 var tmpData = [];
@@ -29,8 +29,7 @@ $.when(
     }),
     $.getJSON(othrData[2], function(arr) {
         prebivalci = arr;
-    }
-    )
+    })
 ).then(function() {
     data = tmpData;
     masterTable = cloneObject(data[0]);
@@ -38,6 +37,7 @@ $.when(
     sumTables();
     dataLoaded = true;
     loadCategories(idCategories);
+
 });
 
 function emptyMaster(){
@@ -48,12 +48,14 @@ function emptyMaster(){
     }
 }
 function sumTables() {
+    console.log(masterTable);
     for (var table in data){
+        console.log(table);
         for(var prop in data[table]){
             for(var sm in data[table][prop]) {
+                //console.log(table + " " + prop + " " + sm);
                 if (sm == "id")     masterTable[prop][sm] = parseFloat(data[table][prop][sm]);
-                else                masterTable[prop][sm] += parseFloat(data[table][prop][sm]);
-            }
+                else                masterTable[prop][sm] += parseFloat(data[table][prop][sm]);            }
         }
     }
 }
