@@ -10,7 +10,7 @@ var dataSlot1 = null, dataSlot2 = null;
 //          Chart Settings
 var barPadding = 1;
 var lineStart = 0.4;
-var lineEnd = 0.935;
+var lineEnd = 0.92;
 
 //          Sort by first column
 function byColumn(a, b) {
@@ -22,6 +22,108 @@ function resizeChart(){
     var chartDiv = $("#chart");
     var h = chartDiv.height();
     var w = chartDiv.width();
+    var data1 = [], data2 = [];
+    d3.select("#chartSvg").style("width", w).style("height", h);
+    jQuery.extend(true, data1, dataSlot1);
+    data = data1.sort(byColumn);
+    data1 = separateData(data1);
+    if (idSlot2 == null){
+
+        //        Chart lines
+        svgChart.selectAll("#rect2")
+            .attr("y", function(d,i) { return i * (h / data1[0].length);})
+            .attr("height", function() {return h/ data1[0].length - barPadding});
+
+        svgChart.selectAll("#rect1")
+            .attr("width", function(d,i) {
+                var wid = parseInt(w*(lineEnd-lineStart)/Math.max.apply(Math, data1[0]) * data1[0][i]);
+                if (wid < 1 &&  data1[0][i] > 0) return 1;
+                return wid;
+            })
+            .attr("height", function() {    return h/ data1[1].length - barPadding})
+            .attr("y", function(d,i) {      return i * (h / data1[0].length); })
+            .attr("x", lineStart*w);
+
+        svgChart.selectAll("#value1")
+            .attr("x", function(d,i) {return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, data1[0]) *  data1[0][i] +5);})
+            .attr("y", function(d,i) {  return i * (h / data1[0].length)+14 ;});
+
+        svgChart.selectAll("#value2")
+            .attr("x", function(d,i) {return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, data1[0]) *  data1[0][i] +5);})
+            .attr("y", function(d,i) {  return i * (h / data1[0].length)+14 ;});
+    }
+    else {
+        jQuery.extend(true, data2, dataSlot1);
+        data2 = data2.sort(byColumn);
+        data2 = separateData(data2);
+        svgChart.selectAll("#rect1")
+            .attr("width", function(d,i) {
+                var wid;
+                var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+                if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) wid = w*(lineEnd-lineStart);
+                else if (v1 == 0) wid  = 0;
+                else  wid = w*(lineEnd-lineStart) * v1/(v1+v2);
+                return wid;
+            })
+            .attr("y", function(d,i) {      return i * (h / data1[0].length); })
+            .attr("height", function() {    return h/ data1[1].length - barPadding})
+            .attr("x", lineStart*w);
+
+        svgChart.selectAll("#rect2")
+            .attr("height", function() {    return h/ data1[1].length - barPadding})
+            .attr("y", function(d,i) {      return i * (h / data1[0].length); })
+            .attr("x",function(d,i) {
+                var x;
+                var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+                if (v2 == 0) x  = lineEnd*w;
+                else  x = lineStart*w + w*(lineEnd-lineStart) * v1/(v1+v2);
+                return x;
+            })
+            .attr("width", function(d,i) {
+                var wid;
+                var x;
+                var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]);
+                var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]);
+
+                if ( v2 == 0) x = lineEnd*w;
+                else  x = lineStart*w + w*(lineEnd-lineStart) * v1/(v1+v2);
+                if ( v2 == 0) wid  = 0;
+                else  wid = lineEnd*w-x;
+                if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) wid = 0;
+                return wid;
+            });
+
+        //        Chart values - € or %
+        svgChart.selectAll("#value1")
+            .text(function(d,i) {
+                var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]) * 100;
+                var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]) * 100;
+                var r = v1/(v1+v2) * 100;
+                if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "0%";
+                else return Math.round(r)+ " %" + "  ";
+            })
+            .attr("x", function(d) {return parseInt(w*lineStart-w*0.03); })
+            .attr("y", function(d,i) {  return i * (h / data1[0].length)+14 ;})
+            .attr("id", "value1");
+
+        svgChart.selectAll("#value2")
+            .text(function(d,i) {
+                var v1 = parseInt(dataSlot1[i][0])/parseInt(masterTable[idSlot1]["sum"]) * 100;
+                var v2 = parseInt(dataSlot2[i][0])/parseInt(masterTable[idSlot2]["sum"]) * 100;
+                var r = v2/(v1+v2) * 100;
+                if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "0%";
+                else return Math.round(r)+ " %" + "  ";
+            })
+            .attr("x", function(d) {return parseInt(w*lineEnd);})
+            .attr("y", function(d,i) {  return i * (h / data1[0].length)+14 ;})
+            .attr("id", "value2");
+    }
+    svgChart.selectAll("#label")
+        .attr("y", function(d,i) { return i * (h / data1[1].length) +14;})
+        .attr("width", lineStart);
+
     $('.chosen-select').trigger('chosen:updated');
 }
 
@@ -32,7 +134,7 @@ function onMouseClickChart(){
     dataSlot2 = null;
     chartDesplayed = false;
     svgChart.remove();
-    lineEnd = 0.935;
+    lineEnd = 0.92;
     d3.select("#name").selectAll("text").remove();
     d3.select("#chart-container").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
     d3.select("#compare-options").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#compare-options").style("display","none")});
@@ -75,6 +177,7 @@ function displayChart(id) {                                                     
         .append("svg")
         .style("width", w)
         .style("height", h)
+        .attr("id","chartSvg")
         .on("click", onMouseClickChart);
 
 
@@ -114,7 +217,6 @@ function loadDropdowns(id) {                                                    
     obcinaCompare[0][0].innerHTML = compareInnerHTML;
 
     d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "teal");
-    //
 
     chosenDiv.trigger('chosen:updated');
 }
@@ -274,7 +376,7 @@ function redoChart(id, slot) {                                                  
                 idSlot1 = id;
                 dataSlot1 = getData(id);
             }
-            lineEnd = 0.948;
+            lineEnd = 0.93;
             console.log(dataSlot1);
             //        Chart lines
             svgChart.selectAll("#rect1")
