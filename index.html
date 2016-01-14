@@ -1,6 +1,9 @@
 ﻿<html>
 <head>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:800italic' rel='stylesheet' type='text/css'>
+    <script>
+        var fontFamily = 'Open Sans';
+    </script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <style>
         html {
             overflow: hidden;
@@ -9,7 +12,7 @@
         body {
             margin: 0px;
             background-color: #e4e4e4;
-            font-family: 'Open Sans', sans-serif ;
+            font-family: 'Open Sans', sans-serif;
             overflow-x: hidden;
         }
         /*::-webkit-scrollbar{
@@ -46,6 +49,9 @@
             height: 90%;
             overflow: hidden;
             display:flex;
+        }
+        .chartText {
+            font-family: 'Slabo 27px', serif;
         }
         #map-container {
             display:flex;
@@ -144,9 +150,10 @@
             top: 20px;
             left: 20px;
             height: 20px;
-            width: 100px;
+            width: 250px;
             opacity: 0.8;
             background-color: #565656;
+            border-radius: 3px;
         }
         #range {
             position:absolute;

@@ -1,14 +1,18 @@
 var selectedCAT = new Array();
 var toggleOn = false;
 var normalisationButton = false;
-function toggleNormButton(){
-    if (!normalisationButton)   d3.select("#toggleNormalisationButton").text("Prebivalci");
-    else                        d3.select("#toggleNormalisationButton").text("Proračun");
+
+function toggleNormButton(show){
+    if (!normalisationButton)   d3.select("#toggleNormalisationButton").text("Normalizacija po prebivalcih");
+    else                        d3.select("#toggleNormalisationButton").text("Normalizacija po proračunu");
 
     colorMapWithData(selectedCAT);
     normalisationButton = !normalisationButton;
     console.log(normalisationButton);
 }
+function hideNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "0px").transition().duration(250).style("margin-left", "-300px");}
+function showNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "-300px").transition().duration(250).style("margin-left", "0");}
+
 function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");
     if (toggleOn) {
