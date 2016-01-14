@@ -11,7 +11,7 @@
             overflow-x: hidden;
         }
         ::-webkit-scrollbar{
-            width:0px;   // here actuall it exist but width is 0 so no one can see it
+            //width:10px;   // here actuall it exist but width is 0 so no one can see it
             background:transparent;
         }
 
@@ -21,7 +21,7 @@
             margin:0;
             top:10%;
             width: 100%;
-            height: 90%;
+            height: 80%;
             background-color: rgba(0, 0, 0, 0.62);
             display: none;
         }
@@ -50,7 +50,7 @@
         }
         #world-map {
             flex:1;
-            height:100%;
+            height:90%;
             width:100%;
         }
         #name{
@@ -69,7 +69,7 @@
             left:100%;
             margin-left: 0px;
             width:300px;
-            height:100%;
+            height:90%;
             background: #4A4A4A;
          }
         #categories{
@@ -122,6 +122,28 @@
             margin: 1.4% 5%;
             width: 50%;
         }
+        #sliderDiv {
+            position:absolute;
+            top:90%;
+            height:10%;
+            width:100%;
+            background-color: #565656;
+        }
+        #range {
+            position:absolute;
+            left:5%;
+            width:90%;
+            top:50%;
+        }
+        span.sliderText{
+            color:white;
+            position:absolute;
+            font-size:2.5vh;
+            top:20%;
+            -ms-transform: translate(-50%,0%); /* IE 9 */
+            -webkit-transform: translate(-50%,0%); /* Safari */
+            transform: translate(-50%,0%);
+        }
     </style>
     <link rel="stylesheet" href="jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -137,6 +159,7 @@
     <script src="framework/prism.js" type="text/javascript" charset="utf-8"></script>
     <script src="data/obcine.js"></script>
     <script src="parser.js"></script>
+    <script src="slider.js"></script>
     <script src="map.js"></script>
     <script src="categories.js"></script>
     <script src="chart.js"></script>
@@ -169,11 +192,13 @@
     <div id="chart-container">
         <div id="chart"></div>
     </div>
+    <div id="sliderDiv">
+        <input id="range" type="range" min="2007" value="2014" max="2014" step="1">
+    </div>
 
 <script type="text/javascript">
-
-</script>
-    <script>
+    loadData(2014);
+    initSlider();
 </script>
   
 </body>
