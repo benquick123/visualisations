@@ -10,7 +10,7 @@ var prebivalci;
 function loadData(newYear) {
 
     year = newYear;
-    console.log(year);
+    //console.log(year);
     var urls = ["data/odhodki_tekoci_" + year + ".json", "data/odhodki_investicijski_" + year + ".json",  "data/transferji_tekoci_" + year + ".json", "data/transferji_investicijski_" + year + ".json"];
     var othrData = ["data/obcine.json", "data/categories.json", "data/prebivalci.json"];
     tmpData = [];
