@@ -12,10 +12,10 @@
             font-family: 'Open Sans', sans-serif ;
             overflow-x: hidden;
         }
-        ::-webkit-scrollbar{
+        /*::-webkit-scrollbar{
             //width:10px;   // here actuall it exist but width is 0 so no one can see it
             background:transparent;
-        }
+        }*/
 
         #chart-container {
             position:absolute;
@@ -24,7 +24,7 @@
             top:10%;
             width: 100%;
             height: 80%;
-            background-color: rgba(0, 0, 0, 0.62);
+            background-color: rgba(74, 74, 74, 0.9);
             display: none;
         }
         #compare-options {
@@ -34,7 +34,7 @@
             top:0;
             width: 100%;
             height: 10%;
-            background-color: rgba(0, 0, 0, 0.62);
+            background-color: rgba(74, 74, 74, 0.9);
             display: none;
         }
         #chart {
@@ -67,12 +67,13 @@
         }
         #categories-container {
             position:absolute;
-            opacity: 0.9;
+            //opacity: 0.9;
             left:100%;
             margin-left: 0px;
             width:300px;
             height:90%;
-            background: #4A4A4A;
+            background: #585858;
+            background-color: rgba(74, 74, 74, 0.9);
          }
         #categories{
             position: absolute;
@@ -80,17 +81,18 @@
             height: 100%;
 
             overflow-x: hidden;
+            overflow-y: scroll;
         }
 
         #toggleButton{
             position:relative;
             float: left;
-            margin-left: -20px;
-            width: 25px;
-            height: 35px;
+            margin-left: -40px;
+            width: 40px;
+            height: 54px;
             top: 0px;
             left: 0px;
-            background-color: #4A4A4A;
+            background-color: #585858;
         }
         .cat_expand, cat_expand_3 {
             line-height: 30px;
@@ -98,7 +100,8 @@
             height: 30px;
             width: 10%;
             cursor: pointer;
-            background-color: #4A4A4A;
+            background-color: #585858;
+            //border-bottom: 1px solid #e6e6e6;
             font-size: 10px;
             color: #e6e6e6;
             float: left;
@@ -108,11 +111,11 @@
             line-height: 30px;
             padding:2px;
             height: 30px;
-            width: 87.3%;
-            border-bottom: 1px solid #e6e6e6;
+            width: 87%;
+            //border-bottom: 1px solid #e6e6e6;
             cursor: pointer;
-            background-color: #4A4A4A;
-            font-size: 10px;
+            background-color: #585858;
+            font-size: 1.5vh;
             color: #e6e6e6;
         }
         #obcina-chosen {
@@ -128,7 +131,10 @@
             top:90%;
             height:10%;
             width:100%;
-            background-color: #565656;
+            background-color: rgba(74, 74, 74, 0.9);
+            //background: #4A4A4A;
+            //opacity: 0.9;
+            //background-color: #565656;
         }
         #toggleNormalisationButton {
             position:absolute;
@@ -157,6 +163,13 @@
             -webkit-transform: translate(-50%,0%); /* Safari */
             transform: translate(-50%,0%);
         }
+        #arrow {
+            position:absolute;
+            //-ms-transform: translate(50%,50%); /* IE 9 */
+            //-webkit-transform: translate(50%,50%); /* Safari */
+            //transform: translate(50%,50%);
+            top:12%;
+        }
     </style>
     <link rel="stylesheet" href="jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
 
@@ -180,7 +193,7 @@
     <div id="map-container">
         <div id="world-map"></div>
         <div id="categories-container">
-            <div id="toggleButton"></div>
+            <div id="toggleButton"><img id="arrow" src="images/leftBig.svg"/></div>
             <div id="categories"></div>
         </div>
     </div>

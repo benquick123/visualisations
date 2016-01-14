@@ -44,6 +44,7 @@ $(function(){
         backgroundColor: "#e4e4e4",
         zoomAnimate: true,
         zoomButtons : false,
+        zoomMin: 1,
         regionStyle: {
             initial: {
                 fill: "#888888"
