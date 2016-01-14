@@ -5,11 +5,11 @@ var toggleOn = false;
 function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");
     if (toggleOn) {
-        categoriesDIV.style("left", "300px").transition().duration(250).style("left", "0px");
+        categoriesDIV.style("margin-left", "-300px").transition().duration(250).style("margin-left", "0px");
         toggleOn = false;
     }
     else {
-        categoriesDIV.style("left", "0px").transition().duration(300).style("left", "300px");
+        categoriesDIV.style("margin-left", "0px").transition().duration(300).style("margin-left", "-300px");
         toggleOn = true;
     }
 }
