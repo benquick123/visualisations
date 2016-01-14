@@ -45,7 +45,10 @@ function loadData(newYear) {
         sumTables();
         dataLoaded = true;
         loadCategories(idCategories);
-        console.log(masterTable);
+        if (chartDisplayed) {
+            redoChart(idSlot1, 1);
+            if (idSlot2 != null) redoChart(idSlot2, 2);
+        }
     });
 }
 

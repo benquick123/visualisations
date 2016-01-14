@@ -15,5 +15,6 @@ function initSlider() {
 function onRangeChange() {
     var year = $("#range")[0].value;
     loadData(year);
+
     //console.log($("#range")[0].value);
 }

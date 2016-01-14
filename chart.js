@@ -3,7 +3,7 @@ window.onresize = resizeChart;
 var svgChart;
 
 //          Chart global data
-var chartDesplayed = false;
+var chartDisplayed = false;
 var idSlot1 = null, idSlot2 = null;
 var dataSlot1 = null, dataSlot2 = null;
 
@@ -132,7 +132,7 @@ function onMouseClickChart(){
     idSlot2 = null;
     dataSlot1 = null;
     dataSlot2 = null;
-    chartDesplayed = false;
+    chartDisplayed = false;
     svgChart.remove();
     lineEnd = 0.92;
     d3.select("#name").selectAll("text").remove();
@@ -154,8 +154,9 @@ function onObcinaCompareChange(event, params) {
 
 function getData(id){
     var data = [];
-    for (var i = 1; i < 9; i++)
-        data.push([parseInt(masterTable[id]["0" + i.toString()]), "0" + i.toString()])
+
+    for (var i = 1; i < 9; i++){
+        data.push([parseInt(masterTable[id]["0" + i.toString()]), "0" + i.toString()]);}
     for (var i = 10; i < 24; i++)
         if (i != 21) data.push([parseInt(masterTable[id][i.toString()]), i.toString()]);
     return data;
@@ -241,8 +242,8 @@ function redoChart(id, slot) {                                                  
     var h = chartDiv.height();
     var w = chartDiv.width();
 
-    if (!chartDesplayed){   // There is no chart
-        chartDesplayed = true;
+    if (!chartDisplayed){   // There is no chart
+        chartDisplayed = true;
         dataSlot1 = getData(id);
         idSlot1 = id;
         jQuery.extend(true, data, dataSlot1);
@@ -377,7 +378,6 @@ function redoChart(id, slot) {                                                  
                 dataSlot1 = getData(id);
             }
             lineEnd = 0.93;
-            console.log(dataSlot1);
             //        Chart lines
             svgChart.selectAll("#rect1")
                 .transition().duration(250)
@@ -393,7 +393,6 @@ function redoChart(id, slot) {                                                  
                     return wid;
                 })
                 .style("fill", function(d,i) {
-                    console.log(dataSlot1[i][0], dataSlot2[i][0]);
                     if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "grey";
                     else return "teal";
                 });
