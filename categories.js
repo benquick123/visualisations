@@ -1,7 +1,6 @@
 var selectedCAT = new Array();
 var toggleOn = false;
 
-
 function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");
     if (toggleOn) {
@@ -65,6 +64,8 @@ function loadCategories(idCategories) {
     d3.select("#categories").selectAll("div.cat_expand").on("click", onExpandMouseClick);
     d3.select("#categories").selectAll("div.cat_expand").on("mouseover", onExpandMouseOver);
     d3.select("#categories").selectAll("div.cat_expand").on("mouseout", onExpandMouseOut);
+
+    colorMapWithData(selectedCAT);
 }
 
 function onExpandMouseOver() {
@@ -94,7 +95,9 @@ function onExpandMouseClick() {
     //console.log(id);
 }
 
+function updateCategoriesColors() {
 
+}
 
 function onCategoryMouseOver() {
     if (selectedCAT[this.getAttribute("id")] == null)
