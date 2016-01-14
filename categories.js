@@ -1,7 +1,13 @@
 var selectedCAT = new Array();
 var toggleOn = false;
+var normalisationButton = false;
+function toggleNormButton(){
+    if (!normalisationButton)   d3.select("#toggleNormalisationButton").text("Prebivalci");
+    else                        d3.select("#toggleNormalisationButton").text("Proračun");
 
-
+    normalisationButton = !normalisationButton;
+    console.log(normalisationButton);
+}
 function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");
     if (toggleOn) {
@@ -128,6 +134,11 @@ function colorMapWithData(selectedCAT) {
         }
     }
     else {
+
+        if (normalisationButton){}              // TODO normalisation toggle
+        else {}
+
+
         var ido = 0;
         var paths = svg.children[1].children;
         var sumObcine = new Array(Object.keys(idObcine).length + 2).join('0').split('').map(parseFloat);

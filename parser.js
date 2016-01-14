@@ -8,6 +8,7 @@ var idObcine, idCategories;
 var prebivalci;
 
 function loadData(newYear) {
+
     year = newYear;
     console.log(year);
     var urls = ["data/odhodki_tekoci_" + year + ".json", "data/odhodki_investicijski_" + year + ".json",  "data/transferji_tekoci_" + year + ".json", "data/transferji_investicijski_" + year + ".json"];
@@ -16,6 +17,7 @@ function loadData(newYear) {
     data = [];
     masterTable = [];
     dataLoaded = false;
+    d3.select("#toggleNormalisationButton").on("click",toggleNormButton).text("Proračun");
     $.when(
         $.getJSON(urls[0], function(arr) {
             tmpData.push(arr);
@@ -49,6 +51,7 @@ function loadData(newYear) {
             redoChart(idSlot1, 1);
             if (idSlot2 != null) redoChart(idSlot2, 2);
         }
+
     });
 }
 

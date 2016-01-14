@@ -1,13 +1,15 @@
 ﻿<html>
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:800italic' rel='stylesheet' type='text/css'>
     <style>
         html {
             overflow: hidden;
+
         }
         body {
             margin: 0px;
             background-color: #e4e4e4;
-            font-family: 'Open-Sans', sans-serif;
+            font-family: 'Open Sans', sans-serif ;
             overflow-x: hidden;
         }
         ::-webkit-scrollbar{
@@ -90,7 +92,6 @@
             left: 0px;
             background-color: #4A4A4A;
         }
-
         .cat_expand, cat_expand_3 {
             line-height: 30px;
             padding:2px;
@@ -129,6 +130,18 @@
             width:100%;
             background-color: #565656;
         }
+        #toggleNormalisationButton {
+            position:absolute;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            top: 20px;
+            left: 20px;
+            height: 20px;
+            width: 100px;
+            opacity: 0.8;
+            background-color: #565656;
+        }
         #range {
             position:absolute;
             left:5%;
@@ -146,7 +159,6 @@
         }
     </style>
     <link rel="stylesheet" href="jquery-jvectormap-2.0.3.css" type="text/css" media="screen"/>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="framework/style.css">
     <link rel="stylesheet" href="framework/prism.css">
@@ -170,10 +182,7 @@
         <div id="categories-container">
             <div id="toggleButton"></div>
             <div id="categories"></div>
-
-
         </div>
-
     </div>
 
     <div id="compare-options">
@@ -192,6 +201,7 @@
     <div id="chart-container">
         <div id="chart"></div>
     </div>
+    <div id="toggleNormalisationButton"></div>
     <div id="sliderDiv">
         <input id="range" type="range" min="2007" value="2014" max="2014" step="1">
     </div>

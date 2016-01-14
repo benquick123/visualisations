@@ -27,6 +27,7 @@ function resizeChart(){
     jQuery.extend(true, data1, dataSlot1);
     data = data1.sort(byColumn);
     data1 = separateData(data1);
+
     if (idSlot2 == null){
 
         //        Chart lines
