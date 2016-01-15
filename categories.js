@@ -2,7 +2,7 @@ var selectedCAT = new Array();
 var toggleOn = false;
 var normalisationButton = false;
 
-function toggleNormButton(show){
+function toggleNormButton(){
     if (!normalisationButton)   d3.select("#toggleNormalisationButton").text("Normalizacija po prebivalcih");
     else                        d3.select("#toggleNormalisationButton").text("Normalizacija po proračunu");
 
@@ -10,8 +10,8 @@ function toggleNormButton(show){
     normalisationButton = !normalisationButton;
     console.log(normalisationButton);
 }
-function hideNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "0px").transition().duration(250).style("margin-left", "-300px");}
-function showNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "-300px").transition().duration(250).style("margin-left", "0");}
+function hideNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "0px").style("opacity",0.8).transition().duration(200).style("margin-left", "-300px").style("opacity",0);}
+function showNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "-300px").style("opacity",0).transition().duration(200).style("margin-left", "0").style("opacity",0.8);}
 
 function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");

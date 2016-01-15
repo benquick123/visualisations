@@ -1,7 +1,7 @@
 
 window.onresize = resizeChart;
 var svgChart, divChart;
-
+var tooltip;
 //          Chart global data
 var chartDisplayed = false;
 var idSlot1 = null, idSlot2 = null;
@@ -139,6 +139,7 @@ function onMouseClickChart(){
     chartDisplayed = false;
     svgChart.remove();
     divChart.remove();
+    tooltip.remove();
     lineEnd = 0.92;
     showNormButton();
     d3.select("#name").selectAll("text").remove();
@@ -156,50 +157,6 @@ function onObcinaCompareChange(event, params) {
     var id = params["selected"];
     d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#0b4e8b");
     redoChart(id - 1, 2);
-}
-
-
-function getData(id){
-    var data = [];
-
-    for (var i = 1; i < 9; i++){
-        data.push([parseInt(masterTable[id]["0" + i.toString()]), "0" + i.toString()]);}
-    for (var i = 10; i < 24; i++)
-        if (i != 21) data.push([parseInt(masterTable[id][i.toString()]), i.toString()]);
-    return data;
-}
-function displayChart(id) {                                                                         // DISPLAY CHART
-    d3.select("#chart-container").style("display", "flex").transition().duration(300).style("opacity", 1).each("end",function(){d3.select("#chart-container").on("click", onMouseClickChart, false)});
-    d3.select("#compare-options").style("display", "flex").transition().duration(300).style("opacity", 1);
-
-    var ido = 0;
-    if (id > 143) ido = 1;
-
-
-    var chartDiv = $("#chart");
-    var h = chartDiv.height();
-    var w = chartDiv.width();
-
-    //      Create SVG element
-    svgChart = d3.select("#chart")
-        .append("svg")
-        .style("width", w)
-        .style("height", h)
-        .attr("id","chartSvg")
-        .style("position","absolute")
-        .on("click", onMouseClickChart);
-    divChart = d3.select("#chart")
-        .append("div")
-        .style("width", w*lineStart-getWidthOfText()-6)
-        .style("height", h)
-        .style("top", "0.4%")
-        .style("left", 0)
-        .style("position","absolute")
-        .attr("id","chartDiv")
-        .on("click", onMouseClickChart);
-
-    redoChart(id,1);
-    loadDropdowns(id + ido);
 }
 
 function loadDropdowns(id) {                                                                        // DROPDOWN
@@ -233,10 +190,63 @@ function loadDropdowns(id) {                                                    
     obcinaChosen[0][0].innerHTML = chosenInnerHTML;
     obcinaCompare[0][0].innerHTML = compareInnerHTML;
 
-    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "teal");
+    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "teal").style("font-size","1.5vh");
 
     chosenDiv.trigger('chosen:updated');
 }
+
+function getData(id){
+    var data = [];
+
+    for (var i = 1; i < 9; i++){
+        data.push([parseInt(masterTable[id]["0" + i.toString()]), "0" + i.toString()]);}
+    for (var i = 10; i < 24; i++)
+        if (i != 21) data.push([parseInt(masterTable[id][i.toString()]), i.toString()]);
+    return data;
+}
+function displayChart(id) {                                                                         // DISPLAY CHART
+    d3.select("#chart-container").style("display", "flex").transition().duration(300).style("opacity", 1).each("end",function(){d3.select("#chart-container").on("click", onMouseClickChart, false)});
+    d3.select("#compare-options").style("display", "flex").transition().duration(300).style("opacity", 1);
+
+    var ido = 0;
+    if (id > 143) ido = 1;
+
+
+    var chartDiv = $("#chart");
+    var h = chartDiv.height();
+    var w = chartDiv.width();
+
+    tooltip  = d3.select("body")
+        .append("div")
+        .attr("id","tooltip")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("color","white")
+        .style("font-size","2vh")
+        .style("visibility", "hidden");
+
+    //      Create SVG element
+    svgChart = d3.select("#chart")
+        .append("svg")
+        .style("width", w)
+        .style("height", h)
+        .attr("id","chartSvg")
+        .style("position","absolute")
+        .on("click", onMouseClickChart);
+    divChart = d3.select("#chart")
+        .append("div")
+        .style("width", w*lineStart-getWidthOfText()-6)
+        .style("height", h)
+        .style("top", "0.4%")
+        .style("left", 0)
+        .style("position","absolute")
+        .attr("id","chartDiv")
+        .on("click", onMouseClickChart);
+
+    redoChart(id,1);
+    loadDropdowns(id + ido);
+}
+
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -399,6 +409,12 @@ function redoChart(id, slot) {                                                  
             lineEnd = 0.93;
             //        Chart lines
             svgChart.selectAll("#rect1")
+                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+                .on("mousemove", function(d,i){return tooltip
+                    .style("top", (event.pageY-10)+"px")
+                    .style("left",(event.pageX+10)+"px")
+                    .text(numberWithCommas(dataSlot1[i][0]) + " €");})
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
                 .transition().duration(250)
                 .attr("width", function(d,i) {
                     var wid;
@@ -417,6 +433,12 @@ function redoChart(id, slot) {                                                  
                 });
 
             svgChart.selectAll("#rect2")
+                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+                .on("mousemove", function(d,i){return tooltip
+                    .style("top", (event.pageY-10)+"px")
+                    .style("left",(event.pageX+10)+"px")
+                    .text(numberWithCommas(dataSlot2[i][0]) + " €");})
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
                 .transition().duration(250)
                 .attr("x",function(d,i) {
                     var x;
