@@ -155,8 +155,15 @@ function onObcinaChosenChange(event, params) {
 
 function onObcinaCompareChange(event, params) {
     var id = params["selected"];
-    d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#0b4e8b");
-    redoChart(id - 1, 2);
+    if (id == "compare") {
+        //console.log(id); //TODO display only one chart
+        d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#444");
+        $("#chartText").css("visibility", "hidden");
+    }
+    else {
+        d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#0b4e8b");
+        redoChart(id - 1, 2);
+    }
 }
 
 function loadDropdowns(id) {                                                                        // DROPDOWN
@@ -179,9 +186,12 @@ function loadDropdowns(id) {                                                    
     var chosenInnerHTML = '<option value=""></option>';
     var compareInnerHTML = '<option value=""></option>';
 
+    compareInnerHTML += '<option value="compare">Primerjaj z ...</option>';
+
     for (var obcina in idObcine) {
         if (obcina == (id+1))
             chosenInnerHTML += '<option selected="selected" value="' + obcina + '">' + idObcine[obcina] + '</option>';
+
         else
             chosenInnerHTML += '<option value="' + obcina + '">' + idObcine[obcina] + '</option>';
         compareInnerHTML += '<option value="' + obcina + '">' + idObcine[obcina] + '</option>';
@@ -190,7 +200,7 @@ function loadDropdowns(id) {                                                    
     obcinaChosen[0][0].innerHTML = chosenInnerHTML;
     obcinaCompare[0][0].innerHTML = compareInnerHTML;
 
-    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "teal").style("font-size","1.5vh");
+    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "#47A57D").style("font-size","1.5vh");
 
     chosenDiv.trigger('chosen:updated');
 }
@@ -207,6 +217,8 @@ function getData(id){
 function displayChart(id) {                                                                         // DISPLAY CHART
     d3.select("#chart-container").style("display", "flex").transition().duration(300).style("opacity", 1).each("end",function(){d3.select("#chart-container").on("click", onMouseClickChart, false)});
     d3.select("#compare-options").style("display", "flex").transition().duration(300).style("opacity", 1);
+
+    d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#444");
 
     var ido = 0;
     if (id > 143) ido = 1;
@@ -262,6 +274,14 @@ function separateData(data){
 }
 
 function redoChart(id, slot) {                                                       // REDO CHART
+    if (slot == 2) {
+        $("#chartText").css("visibility", "visible");
+    }
+    else {
+        $("#chartText").css("visibility", "hidden");
+    }
+
+
     var data = [];
 
     var chartDiv = $("#chart");
@@ -283,7 +303,7 @@ function redoChart(id, slot) {                                                  
             .attr("y", function(d,i) {
                 return i * (h / data[0].length);
             })
-            .style("fill", "teal")
+            .style("fill", "#47A57D")
             .attr("x",lineStart*w)
             .attr("width", 0)
             .transition().duration(500)
@@ -429,7 +449,7 @@ function redoChart(id, slot) {                                                  
                 })
                 .style("fill", function(d,i) {
                     if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "grey";
-                    else return "teal";
+                    else return "#47A57D";
                 });
 
             svgChart.selectAll("#rect2")
