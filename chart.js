@@ -1,4 +1,3 @@
-
 window.onresize = resizeChart;
 var svgChart, divChart;
 var tooltip;
@@ -159,14 +158,20 @@ function onObcinaCompareChange(event, params) {
         //console.log(id); //TODO display only one chart
         d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#444");
         $("#chartText").css("visibility", "hidden");
+        var sel = $("#select-obcina-chosen")[0];
+        var selID = sel.options[sel.selectedIndex].value;
+        //call function to display only one chart. selID is an id of green municipality.
+
+
     }
     else {
         d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#0b4e8b");
         redoChart(id - 1, 2);
+        $("#chartText").css("visibility", "visible");
     }
 }
 
-function loadDropdowns(id) {                                                                        // DROPDOWN
+function loadDropdowns(id) {
     var chosenDiv = $('.chosen-select');
     chosenDiv.chosen({
         placeholder_text_single: "Primerjaj z ...",
@@ -200,7 +205,7 @@ function loadDropdowns(id) {                                                    
     obcinaChosen[0][0].innerHTML = chosenInnerHTML;
     obcinaCompare[0][0].innerHTML = compareInnerHTML;
 
-    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "#47A57D").style("font-size","1.5vh");
+    d3.select("#obcina-chosen").selectAll("a.chosen-single").style("background-color", "#147B4F").style("font-size","1.5vh");
 
     chosenDiv.trigger('chosen:updated');
 }
@@ -219,6 +224,7 @@ function displayChart(id) {                                                     
     d3.select("#compare-options").style("display", "flex").transition().duration(300).style("opacity", 1);
 
     d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#444");
+    $("#chartText").css("visibility", "hidden");
 
     var ido = 0;
     if (id > 143) ido = 1;
@@ -273,15 +279,7 @@ function separateData(data){
     return [values,idx]
 }
 
-function redoChart(id, slot) {                                                       // REDO CHART
-    if (slot == 2) {
-        $("#chartText").css("visibility", "visible");
-    }
-    else {
-        $("#chartText").css("visibility", "hidden");
-    }
-
-
+function redoChart(id, slot) {
     var data = [];
 
     var chartDiv = $("#chart");
@@ -303,7 +301,7 @@ function redoChart(id, slot) {                                                  
             .attr("y", function(d,i) {
                 return i * (h / data[0].length);
             })
-            .style("fill", "#47A57D")
+            .style("fill", "#147B4F")
             .attr("x",lineStart*w)
             .attr("width", 0)
             .transition().duration(500)
@@ -449,7 +447,7 @@ function redoChart(id, slot) {                                                  
                 })
                 .style("fill", function(d,i) {
                     if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "grey";
-                    else return "#47A57D";
+                    else return "#147B4F";
                 });
 
             svgChart.selectAll("#rect2")

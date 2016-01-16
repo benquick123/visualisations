@@ -90,6 +90,7 @@
             left: 0px;
             background-color: #707070;
             border-radius:3px;
+            cursor:pointer;
         }
         .cat_expand, cat_expand_3 {
             line-height: 30px;
@@ -188,6 +189,9 @@
             font-size:1.5vh;
             visibility: hidden;
             white-space: nowrap;
+            -ms-transform: translate(-50%,0%); /* IE 9 */
+            -webkit-transform: translate(-50%,0%); /* Safari */
+            transform: translate(-50%,0%);
         }
 
 
@@ -233,7 +237,7 @@
     </div>
 
     <div id="chart-container">
-        <span id="chartText">Kaj je na tem grafu?</span>
+        <span id="chartText">Primerjava deležev sredstev občin namenjenih posameznim kategorijam?</span>
         <div id="chart"></div>
     </div>
     <div id="toggleNormalisationButton"></div>

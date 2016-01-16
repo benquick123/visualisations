@@ -17,7 +17,7 @@ function loadData(newYear) {
     data = [];
     masterTable = [];
     dataLoaded = false;
-    d3.select("#toggleNormalisationButton").on("click",toggleNormButton).text("Normalizacija po proračunu");
+    d3.select("#toggleNormalisationButton").on("click",toggleNormButton).on("mouseover", toggleMouseOver).on("mouseout", toggleMouseOut).text("Normalizacija po prrebivalcu");
     $.when(
         $.getJSON(urls[0], function(arr) {
             tmpData.push(arr);

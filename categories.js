@@ -1,15 +1,30 @@
 var selectedCAT = new Array();
 var toggleOn = false;
-var normalisationButton = false;
+var normalisationButton = true;
 
 function toggleNormButton(){
     if (!normalisationButton)   d3.select("#toggleNormalisationButton").text("Normalizacija po prebivalcih");
     else                        d3.select("#toggleNormalisationButton").text("Normalizacija po proračunu");
 
-    colorMapWithData(selectedCAT);
     normalisationButton = !normalisationButton;
-    console.log(normalisationButton);
+    colorMapWithData(selectedCAT);
+    //console.log(normalisationButton);
 }
+
+function toggleMouseOver() {
+    if(normalisationButton)
+        d3.select("#toggleNormalisationButton").text("Normalizacija po proračunu").style("color", "#47A57D").style("font-weight", "bold");
+    else
+        d3.select("#toggleNormalisationButton").text("Normalizacija po prebivalcih").style("color", "#47A57D").style("font-weight", "bold");
+}
+
+function toggleMouseOut() {
+    if(normalisationButton)
+        d3.select("#toggleNormalisationButton").text("Normalizacija po prebivalcih").style("color", "white").style("font-weight", "normal");
+    else
+        d3.select("#toggleNormalisationButton").text("Normalizacija po proračunu").style("color", "white").style("font-weight", "normal");
+}
+
 function hideNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "0px").style("opacity",0.8).transition().duration(200).style("margin-left", "-300px").style("opacity",0);}
 function showNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "-300px").style("opacity",0).transition().duration(200).style("margin-left", "0").style("opacity",0.8);}
 
@@ -183,8 +198,9 @@ function colorMapWithData(selectedCAT) {
             }
         }
 
-        if (!normalisationButton){               // TODO normalisation toggle
-            var min = 1, max = 0;
+        if (normalisationButton){
+            //console.log("Curr displayed: na prebivalca");
+            var min = 1, max = 0;                // normalizacija na prebivalca
             for (var obcina in idObcine) {
                 sumObcine[obcina-1] /= prebivalci[obcina];
                 if (sumObcine[obcina-1] > max)
@@ -198,6 +214,7 @@ function colorMapWithData(selectedCAT) {
             }
         }
         else {
+            //console.log("Curr displayed: na proračun");
             var min = 1, max = 0;
             for (var obcina in idObcine) {
                 ido = obcina > 144 ? 1 : 0;
@@ -223,9 +240,9 @@ function colorMapWithData(selectedCAT) {
         var r, g, b;
         for (var obcina in idObcine) {
         //#147B4F
-            r = 136 * (1-sumObcine[obcina-1]) + 20 * (sumObcine[obcina-1]);
-            g = 136 * (1-sumObcine[obcina-1]) + 123 * (sumObcine[obcina-1]);
-            b = 136 * (1-sumObcine[obcina-1]) + 79 * (sumObcine[obcina-1]);
+            r = 136 * (1-sumObcine[obcina-1]) + 20 * (sumObcine[obcina-1]); //14
+            g = 136 * (1-sumObcine[obcina-1]) + 123 * (sumObcine[obcina-1]);//8B
+            b = 136 * (1-sumObcine[obcina-1]) + 79 * (sumObcine[obcina-1]); //4F
             d3.select("#ob" + obcina).transition().duration(250).style("fill", "rgb(" + r + "," + g + "," + b + ")");    //"rgb(22, 146, 44)");//.style("fill-opacity", sumObcine[obcina-1]);
         }
     }
