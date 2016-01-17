@@ -17,7 +17,7 @@ function loadData(newYear) {
     data = [];
     masterTable = [];
     dataLoaded = false;
-    d3.select("#toggleNormalisationButton").on("click",toggleNormButton).on("mouseover", toggleMouseOver).on("mouseout", toggleMouseOut).text("Normalizacija po prrebivalcu");
+    d3.select("#toggleNormalisationButton").on("click",toggleNormButton).on("mouseover", toggleMouseOver).on("mouseout", toggleMouseOut).text("Normalizacija po prebivalcih");
     $.when(
         $.getJSON(urls[0], function(arr) {
             tmpData.push(arr);
@@ -96,4 +96,8 @@ function cloneObject(obj) {
     for (var key in obj)
         temp[key] = cloneObject(obj[key]);
     return temp;
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }

@@ -26,12 +26,12 @@ function toggleMouseOut() {
 }
 
 function hideButtons(){
-    d3.select("#toggleNormalisationButton").style("margin-left", "0px").style("opacity",0.8).transition().duration(200).style("margin-left", "-300px").style("opacity",0);
+    d3.select("#toggleNormalisationButton").style("margin-left", "0px").style("opacity",0.8).transition().duration(200).style("margin-left", "-500px").style("opacity",0);
     d3.select("#toggleButton").style("margin-right", "0px").style("opacity",0.8).transition().duration(400).style("margin-right", "300px").style("opacity",0);
 
 }
 function showButtons(){
-    d3.select("#toggleNormalisationButton").style("margin-left", "-300px").style("opacity",0).transition().duration(200).style("margin-left", "0").style("opacity",0.8);
+    d3.select("#toggleNormalisationButton").style("margin-left", "-500px").style("opacity",0).transition().duration(200).style("margin-left", "0").style("opacity",0.8);
     d3.select("#toggleButton").style("margin-right", "300px").style("opacity",0).transition().duration(400).style("margin-right", "0px").style("opacity",0.8);
 }
 
@@ -87,7 +87,7 @@ function loadCategories(idCategories) {
             //inner += '<div id="expand-cat' + cat + '" class="cat_expand"' + styleexpand3 + '></div>';
             inner += '<div id="cat' + cat + '" class="cat_single"' + stylecat3 + '>';
         }
-        inner += "["+cat+"] "+idCategories[cat].toLowerCase().replace(" ", "");
+        inner += idCategories[cat].toLowerCase().replace(" ", "").capitalizeFirstLetter();
         inner += '</div>';
         inner += "</div>";
     }

@@ -1,4 +1,5 @@
-window.onresize = resizeChart;
+window.onresize = function() {if (chartDisplayed) return resizeChart();};
+
 var svgChart, divChart;
 var tooltip;
 //          Chart global data
@@ -10,7 +11,7 @@ var dataSlot1 = null, dataSlot2 = null;
 var barPadding = 5;
 var lineStart = 0.4;
 var lineEnd = 0.92;
-
+var spaceLabelChart = 20;
 //          Sort by first column
 function byColumn(a, b) {
     if (a[0] === b[0]) return 0;
@@ -25,7 +26,7 @@ function resizeChart(){
 
     var data1 = [], data2 = [];
     d3.select("#chartSvg").style("width", w).style("height", h);
-    d3.select("#chartDiv").style("width", w*lineStart-getWidthOfText()-6).style("height", h);
+    d3.select("#chartDiv").style("width", w*lineStart-getWidthOfText("100%","1.5vh")-spaceLabelChart).style("height", h);
     jQuery.extend(true, data1, dataSlot1);
     data = data1.sort(byColumn);
     data1 = separateData(data1);
@@ -35,7 +36,6 @@ function resizeChart(){
     d3.select("#select_obcina_chosen_chosen").style("width",(dw/2)*0.8+"px");       // dropdown width updates based on width of compare options div
     d3.select("#select_obcina_compare_chosen").style("width",(dw/2)*0.8+"px");      // margin of
     if (idSlot2 == null){
-
         //        Chart lines
         svgChart.selectAll("#rect2")
             .attr("y", function(d,i) { return i * (h / data1[0].length);})
@@ -112,8 +112,8 @@ function resizeChart(){
                 if (dataSlot1[i][0] == 0 && dataSlot2[i][0] == 0) return "0%";
                 else return Math.round(r)+ " %" + "  ";
             })
-            .attr("x", function(d) {return parseInt(w*lineStart-getWidthOfText()-3); })
-            .attr("y", function(d,i) {  return i * (h / data1[0].length)+((h / data1[0].length)*0.5) ;})
+            .attr("x", function(d) {return parseInt(w*lineStart-getWidthOfText("100%","1.5vh")-3); })
+            .attr("y", function(d,i) {  return i * (h / data1[0].length)+((h / data1[0].length)*0.55) ;})
             .attr("id", "value1");
 
         svgChart.selectAll("#value2")
@@ -125,11 +125,11 @@ function resizeChart(){
                 else return Math.round(r)+ " %" + "  ";
             })
             .attr("x", function(d) {return parseInt(w*lineEnd+3);})
-            .attr("y", function(d,i) {  return i * (h / data1[0].length)+((h / data1[0].length)*0.5) ;})
+            .attr("y", function(d,i) {  return i * (h / data1[0].length)+((h / data1[0].length)*0.55) ;})
             .attr("id", "value2");
     }
     divChart.selectAll("#label")
-        .style("width", w*lineStart-getWidthOfText()-6)
+        .style("width", "100%")
         .style("height", function(d,i) {    return h/ data1[1].length})
         .attr("y", function(d,i) {      return i * (h / data1[0].length); });
 
@@ -147,12 +147,16 @@ function onMouseClickChart(){
     tooltip.remove();
     lineEnd = 0.92;
     showButtons();
+    removeRectListener()
     d3.select("#name").selectAll("text").remove();
     d3.select("#chart-container").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
     d3.select("#compare-options").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#compare-options").style("display","none")});
 
 }
-
+function removeRectListener(){
+    d3.selectAll("#rect1").on("mouseover",null).on("mousemove",null).on("mouseout", null);
+    d3.selectAll("#rect2").on("mouseover",null).on("mousemove",null).on("mouseout", null);
+}
 function onObcinaChosenChange(event, params) {
     var id = params["selected"];
     redoChart(id - 1, 1);
@@ -161,14 +165,18 @@ function onObcinaChosenChange(event, params) {
 function onObcinaCompareChange(event, params) {
     var id = params["selected"];
     if (id == "compare") {
-        //console.log(id); //TODO display only one chart
+
         d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#444");
         $("#chartText").css("visibility", "hidden");
         var sel = $("#select-obcina-chosen")[0];
         var selID = sel.options[sel.selectedIndex].value;
         //call function to display only one chart. selID is an id of green municipality.
 
-
+        if (idSlot2 != null){
+            idSlot2 = null;
+            dataSlot2 = null;
+            redoChart(idSlot1, 1);
+        }
     }
     else {
         d3.select("#obcina-compare").selectAll("a.chosen-single").style("background-color", "#0b4e8b");
@@ -245,8 +253,13 @@ function displayChart(id) {                                                     
         .attr("id","tooltip")
         .style("position", "absolute")
         .style("z-index", "10")
-        .style("color","white")
+        .style("color","#4a4a4a")
         .style("font-size","2vh")
+        .style("text-align","center")
+        .style("background-color","#bababa")
+        .style("border-radius","3px")
+        .style("font-weight", "bold")
+        .style("opacity",0.8)
         .style("visibility", "hidden");
 
     //      Create SVG element
@@ -259,9 +272,8 @@ function displayChart(id) {                                                     
         .on("click", onMouseClickChart);
     divChart = d3.select("#chart")
         .append("div")
-        .style("width", w*lineStart-getWidthOfText()-6)
+        .style("width", w*lineStart-getWidthOfText("100%","1.5vh")-spaceLabelChart)
         .style("height", h)
-        .style("top", "0.4%")
         .style("left", 0)
         .style("position","absolute")
         .attr("id","chartDiv")
@@ -286,13 +298,14 @@ function separateData(data){
 }
 
 function redoChart(id, slot) {
+    removeRectListener()
     var data = [];
 
     var chartDiv = $("#chart");
     var h = chartDiv.height();
     var w = chartDiv.width();
 
-    if (!chartDisplayed){   // There is no chart
+    if (!chartDisplayed){                                                       // on chart load
         chartDisplayed = true;
         dataSlot1 = getData(id);
         idSlot1 = id;
@@ -304,6 +317,13 @@ function redoChart(id, slot) {
         //        Chart lines
 
         svgChart.selectAll("rect1").data(data[0]).enter().append("rect")
+            .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+            .on("mousemove", function(d,i){return tooltip
+                .style("top", (event.pageY-10)+"px")
+                .style("left",(event.pageX+10)+"px")
+                .style("width",function() {return getWidthOfText((parseInt(d)/parseInt(masterTable[idSlot1]["sum"])*100).toFixed(2) + " %","2vh") + 20})
+                .text((parseInt(d)/parseInt(masterTable[idSlot1]["sum"])*100).toFixed(2) + " %");})
+            .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
             .attr("y", function(d,i) {
                 return i * (h / data[0].length);
             })
@@ -349,7 +369,7 @@ function redoChart(id, slot) {
                 return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) * d +5);
             })
             .attr("y", function(d,i) {
-                return i * (h / data[0].length)+((h / data[0].length)*0.5);
+                return i * (h / data[0].length)+((h / data[0].length)*0.55);
             })
             .attr("id", "value1");
 
@@ -361,47 +381,68 @@ function redoChart(id, slot) {
                 return parseInt(w*lineEnd);
             })
             .attr("y", function(d,i) {
-                return i * (h / data[0].length)+((h / data[0].length)*0.5) ;
+                return i * (h / data[0].length)+((h / data[0].length)*0.55) ;
             })
             .attr("id", "value2");
 
         //        Chart legend
         divChart.selectAll("label").data(data[1]).enter().append("div")
             .text(function(d) {
-                return idCategories[d];
+                return idCategories[d].toLowerCase().replace(" ", "").capitalizeFirstLetter();
             })
             .style("left", 0)
-            .style("height", function() {
-                return h/ data[0].length  })
-            //.style("line-height",function() { return h/ data[0].length  })
+            .style("height", function() { return h/ data[0].length  })
             .style("top", function(d,i) {
                 return i * (h / data[0].length);
             })
-            .attr("width", w*lineStart-getWidthOfText()-6)
-            .style("overflow","hidden")
-            .style("white-space","nowrap")
-            .style("text-overflow","ellipsis")
-            .style("font-size", "1.5vh")
-            .style("color", "white")
-            .attr("id", "label");
+            .attr("width", w*lineStart-getWidthOfText("100%","1.5vh")-6)
+            .attr("id", "label")
+            .on("mouseover", function(){
+                this.style.overflow="visible";
+                this.style.textShadow="0px 0px 10px #000000, 0px 0px 5px #000000";
+            })
+            .on("mouseout", function(){
+                this.style.overflow="hidden";
+                this.style.textShadow="none";
+            });
 
     }
-    else {
+    else {                                                          // on single-view update or deselect comparing municipality
         if (slot == 1 && idSlot2 == null){
             dataSlot1 = getData(id);
             idSlot1 = id;
+            data = [];
             jQuery.extend(true, data, dataSlot1);
             data = data.sort(byColumn);
             data = separateData(data);
             //        Chart lines
 
             svgChart.selectAll("#rect1")
+                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+                .on("mousemove", function(d,i){return tooltip
+                    .style("top", (event.pageY-10)+"px")
+                    .style("left",(event.pageX+10)+"px")
+                    .style("width",function() {return getWidthOfText((parseInt( data[0][i])/parseInt(masterTable[idSlot1]["sum"])*100).toFixed(2) + " %","2vh") + 20})
+                    .text((parseInt( data[0][i])/parseInt(masterTable[idSlot1]["sum"])*100).toFixed(2) + " %");})
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
                 .transition().duration(250)
                 .attr("width", function(d,i) {
                     var wid = parseInt(w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) * data[0][i]);
                     if (wid < 1 &&  data[0][i] > 0) return 1;
                     return wid;
                 })
+                .style("fill", "#147B4F")
+
+            svgChart.selectAll("#rect2")
+                .attr("fill", "#0B4E8B")
+                .transition().duration(250)
+                .attr("x", function(d,i) {
+                    var wid = parseInt(w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) * data[0][i]);
+                    if (wid < 1 &&  data[0][i] > 0) return (w*lineStart);
+                    return (w*lineStart) + wid;
+                })
+                .attr("width", 0)
+                .transition().duration(0).attr("x", lineEnd*w);
 
             //        Chart values - € or %
             svgChart.selectAll("#value1")
@@ -413,14 +454,19 @@ function redoChart(id, slot) {
                     return parseInt(w*lineStart+w*(lineEnd-lineStart)/Math.max.apply(Math, data[0]) *  data[0][i] +5);
                 })
 
+            svgChart.selectAll("#value2")
+                .text("")
+                .attr("x", function(d) {
+                    return parseInt(w*lineEnd);
+                });
             //        Chart legend
-            svgChart.selectAll("#label")
+            divChart.selectAll("#label")
                 .text(function(d,i) {
-                    return idCategories[data[1][i]];
+                    return idCategories[data[1][i]].toLowerCase().replace(" ", "").capitalizeFirstLetter();
                 });
 
         }
-        else{
+        else{                                                          // on update to from single to compare view
             if (slot == 2){
                 idSlot2 = id;
                 dataSlot2 = getData(id);
@@ -437,6 +483,7 @@ function redoChart(id, slot) {
                 .on("mousemove", function(d,i){return tooltip
                     .style("top", (event.pageY-10)+"px")
                     .style("left",(event.pageX+10)+"px")
+                    .style("width",function() {return getWidthOfText(numberWithCommas(dataSlot1[i][0]) + " €", "2 vh")+20 })
                     .text(numberWithCommas(dataSlot1[i][0]) + " €");})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
                 .transition().duration(250)
@@ -461,6 +508,7 @@ function redoChart(id, slot) {
                 .on("mousemove", function(d,i){return tooltip
                     .style("top", (event.pageY-10)+"px")
                     .style("left",(event.pageX+10)+"px")
+                    .style("width",function() {return getWidthOfText(numberWithCommas(dataSlot2[i][0]) + " €", "2 vh")+20 })
                     .text(numberWithCommas(dataSlot2[i][0]) + " €");})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
                 .transition().duration(250)
@@ -497,8 +545,9 @@ function redoChart(id, slot) {
                 })
                 .style("fill", "white")
                 .style("font-size", "1.5vh")
+                .transition().duration(100)
                 .attr("x", function(d) {
-                    return parseInt(w*lineStart-getWidthOfText()-3);
+                    return parseInt(w*lineStart-getWidthOfText("100%","1.5vh")-3);
                 })
                 .attr("id", "value1");
 
@@ -519,19 +568,19 @@ function redoChart(id, slot) {
 
             divChart.selectAll("#label")
                 .text(function(d,i) {
-                    return idCategories[dataSlot1[i][1]];
+                    return idCategories[dataSlot1[i][1]].toLowerCase().replace(" ", "").capitalizeFirstLetter();
                 })
-                .attr("width", w*lineStart-getWidthOfText()-6);
+                .attr("width", w*lineStart-getWidthOfText("100%","1.5vh")-6);
 
 
         }
 
     }
 }
-function getWidthOfText(){
+function getWidthOfText(txt, size){
     var c=document.createElement('canvas');
     var ctx=c.getContext('2d');
-    ctx.font = '1.5vh ' + fontFamily;
-    var length = ctx.measureText("100%").width;
+    ctx.font = size + fontFamily;
+    var length = ctx.measureText(txt).width;
     return length;
 }

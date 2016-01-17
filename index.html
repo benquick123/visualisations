@@ -1,10 +1,30 @@
 ﻿<html>
 <head>
+
     <script>
         var fontFamily = 'Open Sans';
+
     </script>
+    <link href='https://fonts.googleapis.com/css?family=Palanquin+Dark' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Cambay' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
     <style>
+        #label {
+
+            /*font-family: 'Cambay', sans-serif;*/
+            /*font-family: 'Signika', sans-serif;*/
+            font-family: 'Oxygen', sans-serif;
+            vertical-align:middle;
+            overflow:hidden;
+            cursor: default;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            font-size:2vh;
+            color:white;
+            text-align: right;
+        }
         html {
             overflow: hidden;
 
@@ -12,7 +32,7 @@
         body {
             margin: 0px;
             background-color: #e4e4e4;
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Cambay', sans-serif;
             overflow-x: hidden;
         }
         /*::-webkit-scrollbar{
@@ -41,7 +61,7 @@
             display:flex;
         }
         .chartText {
-            font-family: 'Slabo 27px', serif;
+            font-size: 1.5vh;
         }
         #map-container {
             display:flex;
@@ -238,7 +258,7 @@
     </div>
 
     <div id="chart-container">
-        <span id="chartText">Primerjava deležev sredstev občin namenjenih posameznim kategorijam?</span>
+        <span id="chartText">*Primerjava deležev proračuna, ki ga občine namenijo posamezni kategoriji</span>
         <div id="chart"></div>
     </div>
     <div id="toggleNormalisationButton"></div>
