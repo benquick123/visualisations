@@ -42,7 +42,11 @@ function loadData(newYear) {
         })
     ).then(function() {
         data = tmpData;
+        for (var table in data)
+            data[table] = data[table].sort(byID);
+        console.log(data);
         masterTable = cloneObject(data[0]);
+
         emptyMaster();
         sumTables();
         dataLoaded = true;
@@ -63,12 +67,9 @@ function emptyMaster(){
     }
 }
 function sumTables() {
-
     for (var table in data){
-        //console.log(table);
         for(var prop in data[table]){
             for(var sm in data[table][prop]) {
-                //console.log(table + " " + prop + " " + sm);
                 if (sm == "id")     masterTable[prop][sm] = parseFloat(data[table][prop][sm]);
                 else                masterTable[prop][sm] += parseFloat(data[table][prop][sm]);            }
         }
@@ -100,4 +101,9 @@ function cloneObject(obj) {
 
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+function byID(a, b) {
+    if (a["id"] === b["id"]) return 0;
+    return (a["id"] < b["id"]) ? -1 : 1;
 }
