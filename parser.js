@@ -63,7 +63,7 @@ function emptyMaster(){
     }
 }
 function sumTables() {
-    //console.log(masterTable);
+
     for (var table in data){
         //console.log(table);
         for(var prop in data[table]){

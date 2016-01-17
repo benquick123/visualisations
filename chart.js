@@ -300,7 +300,7 @@ function separateData(data){
 function redoChart(id, slot) {
     removeRectListener()
     var data = [];
-
+    console.log(masterTable[id]["sum"],idObcine[id]);
     var chartDiv = $("#chart");
     var h = chartDiv.height();
     var w = chartDiv.width();
