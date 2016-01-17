@@ -25,8 +25,15 @@ function toggleMouseOut() {
         d3.select("#toggleNormalisationButton").text("Normalizacija po proračunu").style("color", "white").style("font-weight", "normal");
 }
 
-function hideNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "0px").style("opacity",0.8).transition().duration(200).style("margin-left", "-300px").style("opacity",0);}
-function showNormButton(){ d3.select("#toggleNormalisationButton").style("margin-left", "-300px").style("opacity",0).transition().duration(200).style("margin-left", "0").style("opacity",0.8);}
+function hideButtons(){
+    d3.select("#toggleNormalisationButton").style("margin-left", "0px").style("opacity",0.8).transition().duration(200).style("margin-left", "-300px").style("opacity",0);
+    d3.select("#toggleButton").style("margin-right", "0px").style("opacity",0.8).transition().duration(400).style("margin-right", "300px").style("opacity",0);
+
+}
+function showButtons(){
+    d3.select("#toggleNormalisationButton").style("margin-left", "-300px").style("opacity",0).transition().duration(200).style("margin-left", "0").style("opacity",0.8);
+    d3.select("#toggleButton").style("margin-right", "300px").style("opacity",0).transition().duration(400).style("margin-right", "0px").style("opacity",0.8);
+}
 
 function toggleSidebar(){
     var categoriesDIV = d3.select("#categories-container");

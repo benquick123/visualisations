@@ -18,9 +18,11 @@ function byColumn(a, b) {
 }
 
 function resizeChart(){
+
     var chartDiv = $("#chart");
     var h = chartDiv.height();
     var w = chartDiv.width();
+
     var data1 = [], data2 = [];
     d3.select("#chartSvg").style("width", w).style("height", h);
     d3.select("#chartDiv").style("width", w*lineStart-getWidthOfText()-6).style("height", h);
@@ -28,12 +30,16 @@ function resizeChart(){
     data = data1.sort(byColumn);
     data1 = separateData(data1);
 
+    // change if
+    var dw = $("#compare-options").width();
+    d3.select("#select_obcina_chosen_chosen").style("width",(dw/2)*0.8+"px");       // dropdown width updates based on width of compare options div
+    d3.select("#select_obcina_compare_chosen").style("width",(dw/2)*0.8+"px");      // margin of
     if (idSlot2 == null){
 
         //        Chart lines
         svgChart.selectAll("#rect2")
             .attr("y", function(d,i) { return i * (h / data1[0].length);})
-            .attr("height", function() {return h/ data1[0].length - barPadding})
+            .attr("height", function() { var tmp = h/ data1[1].length - barPadding;  if (tmp<0) return 1; return tmp;})
             .attr("x", lineEnd*w);
 
         svgChart.selectAll("#rect1")
@@ -42,7 +48,7 @@ function resizeChart(){
                 if (wid < 1 &&  data1[0][i] > 0) return 1;
                 return wid;
             })
-            .attr("height", function() {    return h/ data1[1].length - barPadding})
+            .attr("height", function() { var tmp = h/ data1[1].length - barPadding;  if (tmp<0) return 1; return tmp;})
             .attr("y", function(d,i) {      return i * (h / data1[0].length); })
             .attr("x", lineStart*w);
 
@@ -69,11 +75,11 @@ function resizeChart(){
                 return wid;
             })
             .attr("y", function(d,i) {      return i * (h / data1[0].length); })
-            .attr("height", function() {    return h/ data1[1].length - barPadding})
+            .attr("height", function() { var tmp = h/ data1[1].length - barPadding;  if (tmp<0) return 1; return tmp;})
             .attr("x", lineStart*w);
 
         svgChart.selectAll("#rect2")
-            .attr("height", function() {    return h/ data1[1].length - barPadding})
+            .attr("height", function() { var tmp = h/ data1[1].length - barPadding;  if (tmp<0) return 1; return tmp;})
             .attr("y", function(d,i) {      return i * (h / data1[0].length); })
             .attr("x",function(d,i) {
                 var x;
@@ -125,7 +131,7 @@ function resizeChart(){
     divChart.selectAll("#label")
         .style("width", w*lineStart-getWidthOfText()-6)
         .style("height", function(d,i) {    return h/ data1[1].length})
-        .attr("y", function(d,i) {      return i * (h / data1[0].length); })
+        .attr("y", function(d,i) {      return i * (h / data1[0].length); });
 
     $('.chosen-select').trigger('chosen:updated');
 }
@@ -140,7 +146,7 @@ function onMouseClickChart(){
     divChart.remove();
     tooltip.remove();
     lineEnd = 0.92;
-    showNormButton();
+    showButtons();
     d3.select("#name").selectAll("text").remove();
     d3.select("#chart-container").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#chart-container").style("display","none")});
     d3.select("#compare-options").transition().duration(250).style("opacity",0).each("end", function () {d3.select("#compare-options").style("display","none")});
@@ -293,7 +299,7 @@ function redoChart(id, slot) {
         jQuery.extend(true, data, dataSlot1);
         data = data.sort(byColumn);
         data = separateData(data);
-        hideNormButton();
+        hideButtons();
 
         //        Chart lines
 
