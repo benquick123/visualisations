@@ -73,9 +73,8 @@ $(function(){
         onRegionClick: function (e, code) {
             var id = code.replace("ob", "");
             var region = $('#world-map').vectorMap('get', 'mapObject').regions[code];
-            //console.log(id);
             //console.log(region);
-            if (id != 213) {
+            if (id != 213 && !(year<2011 && id == 212)) {
                 if (id > 144) id--;
                 if (toggleOn) toggleSidebar();
                 displayChart(id - 1);

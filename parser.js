@@ -44,7 +44,7 @@ function loadData(newYear) {
         data = tmpData;
         for (var table in data)
             data[table] = data[table].sort(byID);
-        console.log(data);
+
         masterTable = cloneObject(data[0]);
 
         emptyMaster();
@@ -71,6 +71,7 @@ function sumTables() {
         for(var prop in data[table]){
             for(var sm in data[table][prop]) {
                 if (sm == "id")     masterTable[prop][sm] = parseFloat(data[table][prop][sm]);
+                else if (isNaN(parseFloat(data[table][prop][sm]))) masterTable[prop][sm] += 0;
                 else                masterTable[prop][sm] += parseFloat(data[table][prop][sm]);            }
         }
     }

@@ -308,6 +308,8 @@ function redoChart(id, slot) {
         chartDisplayed = true;
         dataSlot1 = getData(id);
         idSlot1 = id;
+
+
         jQuery.extend(true, data, dataSlot1);
         data = data.sort(byColumn);
         data = separateData(data);
